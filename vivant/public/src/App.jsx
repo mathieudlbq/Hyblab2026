@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import Calque_1 from '/plan_chemin.svg'
 import ImageCrawl from './test'
+import TestSvg from './ExtractSvg'
 import './App.css'
 
 function App() {
@@ -10,16 +10,8 @@ function App() {
 
   return (
     <>
-      <h1>Mort</h1>
-      <div>
-        <img src={Calque_1} className="w-100 logo" alt="logo" />
-        <img src={Calque_1} className="logo" alt="logo" />
-        <img src={Calque_1} className="logo" alt="logo" />
-        <img src={Calque_1} className="logo" alt="logo" />
-        <img src={Calque_1} className="logo" alt="logo" />
-        <img src={Calque_1} className="logo" alt="logo" />
-      </div>
       <ImageCrawl/>
+      <TestSvg/>
     </>
   )
 }
