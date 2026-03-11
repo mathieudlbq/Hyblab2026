@@ -1,5 +1,5 @@
   import { motion, useTransform, useScroll, useSpring } from "framer-motion";
-  import { useRef } from "react";
+  import { useRef, useState, useEffect } from "react";
 
   const images = [
     "/Path 1.svg",
@@ -16,7 +16,14 @@
   const InfinitePath = () => {
 
     const containerRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
 
+    useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
     
     // 2. On récupère la progression du scroll (0 à 1)
     const { scrollYProgress } = useScroll({
@@ -32,9 +39,11 @@
       restSpeed: 0.000001
     });
 
-    const y = useTransform(smoothProgress, [0, 1], ["-50%", "0%"]);
+    const activeProgress = isMobile ? scrollYProgress : smoothProgress;
+    const outputRange = isMobile ? ["0%", "-50%"] : ["-50%", "0%"];
+    const y = useTransform(activeProgress, [0, 1], outputRange);
     return (
-      <div ref={containerRef} className="relative h-[5000vh] ">
+      <div ref={containerRef} className="relative h-[1500vh] ">
 
         <div className="sticky top-0 mask-y-from-75% mask-y-to-90% h-screen w- overflow-hidden flex justify-center [perspective:1200px]">
           
@@ -47,9 +56,10 @@
           >
             
             <motion.div 
+              layout
               className="flex flex-col w-full will-change-transform"
               initial={{ y: "-50%" }}
-              style={{ y }}
+              style={{ y, translateZ: 0 }}
               transition={{
                 duration: 20, // Ajuste pour la vitesse du chemin
                 ease: "linear",

@@ -10,6 +10,9 @@ body::-webkit-scrollbar {
 html, body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  scroll-behavior: auto !important;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 :root {
@@ -31,4 +34,10 @@ html, body {
 .no-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.scroll-container {
+  overflow-y: scroll;
+  touch-action: pan-y; /* Force le navigateur à ne gérer que l'axe vertical sans fioritures */
+  -webkit-overflow-scrolling: auto; /* Désactive le momentum natif iOS qui cause souvent ce lag en inversion */
 }
