@@ -31,10 +31,11 @@ const initSlide1 = async function(){
   const data1 = await response.json();
 
   // Get some dummy data
-  response = await fetch('data/dummy.json');
+  response = await fetch('data/contaminationMiniere.json');
   const data2 = await response.json();
 
   // Update the DOM to insert topic and data
-  const footer = document.querySelector('footer p');
-  footer.textContent = `Our topic is "${data1.topic}" and here is "${data2.message}" retrieved on the server.`;
+  const titleSlide = document.querySelector('.titre');
+  console.log(titleSlide)
+  titleSlide.innerHTML = `${data2.titreEnquete}`;
 };
