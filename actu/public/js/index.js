@@ -13,7 +13,7 @@ const film_cards = [];
 
 const nb_card = 13;
 let  nb_tours = Math.round(Math.random() * 30 + 10);
-const distance = 1000
+const distance = 1300
 
 
 
@@ -249,28 +249,32 @@ Observer.create({
 
     const curent_index = (film_cards.length + (-nb_tours) % film_cards.length) % film_cards.length
 
-    console.log(decalageY)
     const ang =(((2 * Math.PI) / film_cards.length) * ((curent_index + nb_tours) % film_cards.length)) + decalageY
-    const degangle = ang*180 / Math.PI
-    console.log(degangle)
+    const degangle = Math.round(ang*180 / Math.PI)
     
-    if (degangle > 25) {
-      nb_tours += degangle % 25
+    
+    const censibiliter = 10
+
+    console.log("degangle : ", degangle)
+    console.log("25%",degangle / (censibiliter*2))
+
+    if (degangle > censibiliter) {
+      nb_tours += Math.round(degangle / (censibiliter*2))
       console.log("ooooooooooooooo")
-      console.log(nb_tours)
     }
-    else if (degangle < -25) {
-      nb_tours -= -degangle % 25
+    else if (degangle < -censibiliter) {
+      nb_tours -= Math.round(-degangle / (censibiliter*2))
       console.log("iiiiiiiiiiiiiii")
-      console.log(nb_tours)
     }
     console.log(nb_tours)
 
     decalageY = 0;
 
     film_cards.forEach((elem, index) => {
-      const angle = (((2 * Math.PI) / film_cards.length) * ((index + nb_tours) % film_cards.length)) + decalageY
+      const angle = (((2 * Math.PI) / film_cards.length) * ((index + nb_tours) % film_cards.length))
+
       gsap.to(elem, {
+        duration : 0.2,
         y: Math.sin(angle) * distance + (window.innerHeight / 2),
         z: Math.cos(angle) * distance,
         scale: ((Math.cos(angle) * distance + distance) * 0.8 / (distance * 2) + 0.2) * 2.5,
