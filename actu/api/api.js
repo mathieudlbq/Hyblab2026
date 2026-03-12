@@ -17,6 +17,11 @@ let db;
 
 // ROUTES API
 
+
+// =========================
+// ========== GET ==========
+// =========================
+
 app.get('/init', async function ( req, res ) {
     await initialisation();
     await test1();
@@ -25,6 +30,7 @@ app.get('/init', async function ( req, res ) {
     res.json({'Ok':true});
 } );
 
+// --------film-------------
 
 app.get('/film-week', async function ( req, res ) {
     const { last_date } = await GetLastDate();
@@ -50,6 +56,35 @@ app.get('/film-like', async (req, res) => {
 
 });
 
+//récupérer le classement des films
+app.get('/film-ranking', async (req, res) => {
+
+    const date = await GetLastDate();
+    const films = await GetClassement(date);
+
+    if (films){
+        res.json(films);
+    }
+    else{
+        res.status(401).json({ error: "Aucun films" });
+    }
+});
+
+// récupérer le film coup de coeur de la semaine
+app.get('/film-bestofweek', async (req, res) => {
+
+    const date = await GetLastDate();
+    const film = await GetFilmsCoupDeCoeurByDate(date);
+
+    if (film){
+        res.json(film);
+    }
+    else{
+        res.status(401).json({ error: "Aucun film coup de coeur cette semaine" });
+    }
+});
+
+
 // Sample endpoint that sends the partner's name
 app.get('/topic', function ( req, res ) {
     let topic;
@@ -60,6 +95,27 @@ app.get('/topic', function ( req, res ) {
     res.json({'topic':topic});
 } );
 
+
+// --------acteurs-------------
+
+//récupérer des acteurs par leur film
+app.get('/acteur/:id_film', async (req, res) => {
+
+    const film = parseInt(req.params.id_film);
+
+    const acteurs = await GetActeursByFilm(film);
+
+    if (acteurs){
+        res.json(acteurs);
+    }
+    else{
+        res.status(401).json({ error: "Aucun acteur pour le film " + film});
+    }
+});
+
+
+
+// --------utilisatuers-------------
 
 app.get("/create-user", async (req,res)=>{
 
@@ -95,6 +151,102 @@ function generateToken(){
 
     return token;
 }
+
+// =========================
+// ========== POST =========
+// =========================
+
+//ajouter un film aimé
+app.post("/film-like", async(req, res) => {
+    const {id_film, id_utilisateur} = req.body;
+    if (!id_film || !id_utilisateur){
+        res.status(400).json({ error: 'champs vide' });
+    }
+
+    const film = await ajoutFilmAime(id_film, id_utilisateur);
+    if(!film){
+        res.status(400).json({error: "erreur d'insertion"});
+    }
+    else{
+        res.json({message : "film insérer avec succès voici son id :" + film})
+    }
+});
+
+
+//ajouter un film
+app.post("/film", async(req, res) => {
+    const {nom , affiche, bande_annonce, critique, nb_etoile, description, realisateur, date_sortie} = req.body;
+
+    const film = await ajoutFilm(nom, affiche, bande_annonce, critique, nb_etoile, description, realisateur, date_sortie);
+    if(!film){
+        res.status(400).json({error: "erreur d'insertion"});
+    }
+    else{
+        res.json({message : "film insérer avec succès voici son id :" + film})
+    }
+});
+
+//ajouter un film
+app.post("/film-bestofweek", async(req, res) => {
+    const {id_film, date} = req.body;
+
+    const film = await ajoutFilmCoupDeCoeur(id_film, date);
+    if(!film){
+        res.status(400).json({error: "erreur d'insertion"});
+    }
+    else{
+        res.json({message : "film insérer avec succès voici son id :" + film})
+    }
+});
+
+//ajouter un acteur
+app.post("/acteur", async(req, res) => {
+    const {nom, prenom} = req.body;
+
+    const acteur = await ajoutActeur(nom, prenom);
+    if(!acteur){
+        res.status(400).json({error: "erreur d'insertion"});
+    }
+    else{
+        res.json({message : "acteur insérer avec succès voici son id :" + acteur})
+    }
+});
+
+//ajouter un acteur à un film
+app.post("/acteur-film", async(req, res) => {
+    const {id_film, id_acteur} = req.body;
+
+    const acteur = await ajoutFilmActeur(id_film, id_acteur);
+    if(!acteur){
+        res.status(400).json({error: "erreur d'insertion"});
+    }
+    else{
+        res.json({message : "acteur insérer avec succès voici son id :" + acteur})
+    }
+});
+
+// =========================
+// ========= DELETE ========
+// =========================
+
+app.delete("/film-like/id_film", async(res,req)=>{
+    const id_film = parseInt(req.params.id_film);
+    let token = req.cookie.token;
+    const id_utilisateur = await GetUserByToken(token);
+    const film = supprimeFilmAime(id_film, id_utilisateur);
+    if(!film){
+        res.status(400).json({error: "erreur de suppression"});
+    }
+    else{
+        res.json({message : "film disliké avec succès "});
+    }
+});
+
+
+
+
+
+
 
 // BASE DE DONNEES
 
@@ -480,8 +632,6 @@ async function ajoutUtilisateur(token){
     `,[token]);
 
     return insert.lastID;
-
-
 }
 
 async function ajoutFilmAime(id_film, id_utilisateur){
@@ -492,8 +642,6 @@ async function ajoutFilmAime(id_film, id_utilisateur){
     `,[id_film, id_utilisateur]);
 
     return insert.lastID;
-
-
 }
 
 async function ajoutFilm(nom, affiche, bande_annonce, critique, nb_etoile, description, realisateur, date_sortie){
@@ -516,8 +664,6 @@ async function ajoutActeur(nom, prenom){
 
     return insert.lastID;
 
-    
-
 }
 
 async function ajoutFilmActeur(id_film, id_acteur){
@@ -539,9 +685,16 @@ async function ajoutFilmCoupDeCoeur(id_film, date){
     `,[id_film,date]);
 
     return insert.lastID;
+}
 
-    
+async function supprimeFilmAime(id_film, id_utilisateur){
+    const db = await getDB();
 
+    const deleteQuery = await db.run(`
+        DELETE FROM FilmAime WHERE id_film = ? and id_utilisateur = ?
+    `,[id_film, id_utilisateur]);
+
+    return true;
 }
 
 
