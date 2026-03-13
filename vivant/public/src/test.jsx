@@ -1,14 +1,39 @@
 import { motion, useScroll, useSpring, useMotionValue } from "framer-motion";
 import { useRef, useState, useEffect, useMemo } from "react";
-import path1Raw from '/paths/1.svg?raw';
-import path2Raw from '/paths/2.svg?raw';
-import path3Raw from '/paths/3.svg?raw';
+
+// Imports des SVGs pour extraction de données (raw) et pour affichage (URL)
+import path1Raw from './assets/paths/1.svg?raw';
+import path2Raw from './assets/paths/2.svg?raw';
+import path3Raw from './assets/paths/3.svg?raw';
+import path1Url from './assets/paths/1.svg';
+import path2Url from './assets/paths/2.svg';
+import path3Url from './assets/paths/3.svg';
+
+import up_straight from './assets/mr_patate/up_straight.svg';
+import up_left from     './assets/mr_patate/up_left.svg';
+import up_right from    './assets/mr_patate/up_right.svg';
+import down_straight from './assets/mr_patate/down_straight.svg';
+import down_left from   './assets/mr_patate/down_left.svg';
+import down_right from  './assets/mr_patate/down_right.svg';
+import right from       './assets/mr_patate/right.svg';
+import left from        './assets/mr_patate/left.svg';
 
 const dicoPaths = {
-  path1 : { raw: path1Raw, svg: '/paths/1.svg' },
-  path2 :{ raw: path2Raw, svg: '/paths/2.svg' },
-  path3 :{ raw: path3Raw, svg: '/paths/3.svg' }
-}
+  path1: { raw: path1Raw, svg: path1Url },
+  path2: { raw: path2Raw, svg: path2Url },
+  path3: { raw: path3Raw, svg: path3Url }
+};
+
+const posCyclist = {
+  up_straight,
+  up_left,
+  up_right,
+  down_straight,
+  down_left,
+  down_right,
+  right,
+  left,
+};
 
 const pathList = [
   dicoPaths.path1,
@@ -24,16 +49,21 @@ const InfinitePath = () => {
   const [isMobile, setIsMobile] = useState(false);
   const pathRefs = useRef([]);
   const [pathsData, setPathsData] = useState([]);
-  
+
   const [cyclistX, setCyclistX] = useState("50%");
   const pathY = useMotionValue("calc(85vh - 100%)");
 
-  const SPEED_DESKTOP = 2700;
-  const SPEED_MOBILE = 1300;
+  // NOUVEAU : isMovingUpRef pour "vérouiller" le sens quand le spring ralentit trop
+  const latestProgress = useRef(0);
+  const isMovingUpRef = useRef(true); 
+  const currentSvgPos = useRef(posCyclist.up_right);
+  const [cyclistSvgPos, setCyclistSvgPos] = useState(posCyclist.up_right);
+
+  const SPEED_DESKTOP = 5000;
+  const SPEED_MOBILE = 2500;
 
   const dynamicHeight = useMemo(() => {
     const speed = isMobile ? SPEED_MOBILE : SPEED_DESKTOP;
-    // adapt nb de chemins
     const multiplier = Math.max(1, pathList.length / 2);
     return `${multiplier * speed}vh`;
   }, [isMobile, pathList.length]);
@@ -67,32 +97,22 @@ const InfinitePath = () => {
 
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
-    damping: 30,
-    mass: 3,
+    damping: 50,
+    mass: 1,
     restDelta: 0.000001,
     restSpeed: 0.000001
   });
 
   const activeProgress = isMobile ? scrollYProgress : smoothProgress;
-  const latestCyclistX = useRef(null)
-  const [cyclistSvgPos, setCyclistSvgPos] = useState("/mr_patate/up_right.svg")
-
-  const updateCyclistPos = (currentCyclistX) => {
-    console.log(currentCyclistX, latestCyclistX)
-    latestCyclistX.current = currentCyclistX
-  }
 
   useEffect(() => {
     const unsubscribe = activeProgress.on("change", (latest) => {
-    
       if (pathsData.length === 0) return;
 
       const totalSegments = pathList.length;
       const globalPos = latest * totalSegments;
-
       const maxIndex = Math.max(0, pathList.length - 1);
       const index = Math.min(Math.floor(globalPos), maxIndex);
-
       const localProgress = globalPos - index;
 
       const pathEl = pathRefs.current[index];
@@ -100,29 +120,87 @@ const InfinitePath = () => {
       if (!pathEl || !data) return;
 
       const length = pathEl.getTotalLength();
-      
-      // On regarde où sont le tout premier point et le tout dernier point de la ligne
+
+      // Détecter le sens du path et forcer la lecture bas → haut
       const pStart = pathEl.getPointAtLength(0);
       const pEnd = pathEl.getPointAtLength(length);
-      
-      // Si le point de départ a un Y plus grand que le point de fin, la ligne monte.
       const isDrawnBottomToTop = pStart.y > pEnd.y;
-
-      // On force t pour qu'il aille TOUJOURS du point le plus bas vers le point le plus haut !
       const t = isDrawnBottomToTop ? localProgress : 1 - localProgress;
-      
+
       const point = pathEl.getPointAtLength(t * length);
-      
-      updateCyclistPos(point.x)
 
       // 1. POSITION X DU CYCLISTE
       const xPercent = (point.x / data.width) * 100;
       setCyclistX(`${xPercent}%`);
 
-      // 2. POSITION Y DU DÉCOR
+      // 2. GESTION DU SCROLL HAUT/BAS (Ultra sensible)
+      const diffScroll = latest - latestProgress.current;
+      
+      // On baisse le seuil drastiquement (1e-6) : 
+      // Il captera les scrolls lents instantanément, mais ignorera les micro-erreurs mathématiques.
+      if (diffScroll > 0.000001) {
+        isMovingUpRef.current = true;
+      } else if (diffScroll < -0.000001) {
+        isMovingUpRef.current = false;
+      }
+      
+      const isMovingUp = isMovingUpRef.current;
+      latestProgress.current = latest;
+
+      // 3. LA MAGIE GÉOMÉTRIQUE : Calculer l'angle RÉEL du chemin
+      const lp1 = Math.max(localProgress - 0.002, 0);
+      const lp2 = Math.min(localProgress + 0.002, 1);
+      
+      const t1 = isDrawnBottomToTop ? lp1 : 1 - lp1;
+      const t2 = isDrawnBottomToTop ? lp2 : 1 - lp2;
+      
+      const pt1 = pathEl.getPointAtLength(t1 * length);
+      const pt2 = pathEl.getPointAtLength(t2 * length);
+      
+      const dx = pt2.x - pt1.x;
+      const dy = pt2.y - pt1.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      
+      // directionX représente l'inclinaison physique du chemin (> 0 = droite, < 0 = gauche)
+      let directionX = dist > 0 ? dx / dist : 0;
+      const absDirX = Math.abs(directionX);
+
+      // Seuils d'angle (0.25 = léger virage, 0.6 = virage fort)
+      const SEUIL_STRAIGHT = 0.25; 
+      const SEUIL_DIAG = 0.85;      
+
+      let newImage;
+      
+      if (absDirX < SEUIL_STRAIGHT) {
+        // Ligne droite verticale
+        newImage = isMovingUp ? posCyclist.up_straight : posCyclist.down_straight;
+      } else if (directionX > 0) {
+        // Le chemin monte vers la DROITE ( ↗ )
+        if (isMovingUp) {
+          newImage = absDirX < SEUIL_DIAG ? posCyclist.up_right : posCyclist.right;
+        } else {
+          // Si on recule sur ce chemin, on va vers le BAS à GAUCHE ( ↙ )
+          newImage = absDirX < SEUIL_DIAG ? posCyclist.down_left : posCyclist.left;
+        }
+      } else {
+        // Le chemin monte vers la GAUCHE ( ↖ )
+        if (isMovingUp) {
+          newImage = absDirX < SEUIL_DIAG ? posCyclist.up_left : posCyclist.left;
+        } else {
+          // Si on recule sur ce chemin, on va vers le BAS à DROITE ( ↘ )
+          newImage = absDirX < SEUIL_DIAG ? posCyclist.down_right : posCyclist.right;
+        }
+      }
+
+      // Mise à jour de React SEULEMENT si on a vraiment changé d'image
+      if (newImage !== currentSvgPos.current) {
+        currentSvgPos.current = newImage;
+        setCyclistSvgPos(newImage);
+      }
+
+      // 4. POSITION Y DU DÉCOR
       const N = pathList.length;
       const percentY = ((N - 1 - index) + (point.y / data.height)) / N * 100;
-      
       pathY.set(`calc(85vh - ${percentY}%)`);
     });
 
@@ -167,14 +245,18 @@ const InfinitePath = () => {
 
           {/* VÉLO */}
           <motion.div
-            className="absolute bottom-[10%] z-50 w-24 h-24 pointer-events-none"
+            className="absolute bottom-[8.5%] z-50 xl:w-35 xl:h-35 w-20 h-20 pointer-events-none"
             style={{
               left: cyclistX,
               transform: "translateX(-50%) translateZ(20px) rotateX(-50deg)",
               transformOrigin: "bottom center"
             }}
           >
-            <img src={cyclistSvgPos} className="w-full h-full object-contain relative z-10" alt="vélo" />
+            <img
+              src={cyclistSvgPos}
+              className="w-full h-full object-contain relative z-10"
+              alt="vélo"
+            />
           </motion.div>
         </div>
       </div>

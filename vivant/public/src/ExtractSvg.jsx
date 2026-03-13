@@ -1,4 +1,4 @@
-import path from '/path.svg?raw'
+import path from './assets/path.svg?raw'
 import { useEffect, useRef, useState, useMotion } from 'react';
 
 const TestSvg = () => {

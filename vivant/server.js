@@ -21,8 +21,12 @@ const api = require('./api/api');
 app.use('/api', api);
 
 // Minimum routing: serve static content from the html directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/dist')));
 app.use(express.static(path.join(__dirname, '../__common-logos__')));
+
+app.get('*splat', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public/dist', 'index.html'));
+});
 
 // You can then add whatever routing code you need
 // database creation

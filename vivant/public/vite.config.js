@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 import tailwind from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: '/vivant/',
   plugins: [react(), tailwind()],
-  publicDir: 'assets', // On change le nom ici
   server: {
     proxy: {
       // Redirige localhost:5173/api vers localhost:3000/api

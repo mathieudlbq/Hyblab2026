@@ -19,7 +19,7 @@ const OldTestComponents = () => (
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/vivant">
       <Routes>
         <Route path="/" element={<MainLayout />}>
           {/* Default Route, the new landing page */}
