@@ -1,10 +1,10 @@
-
 /**
  * 
  * @param {string} city 
  * @returns {Object} {latitude, longitude}
+ * 
  */
-async function getCoordinates(city) {
+export async function getCoordinates(city) {
 
     try {
         const url = `https://api-adresse.data.gouv.fr/search/?q=${city}`;
@@ -25,4 +25,25 @@ async function getCoordinates(city) {
     }
 }
 
-getCoordinates("Nantes")
+// getCoordinates("Nantes")
+
+export async function getCityByCoordinates(lat, lng) {
+    try {
+        const url = `https://api-adresse.data.gouv.fr/reverse/?lon=${lng}&lat=${lat}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.features.length === 0) {
+            console.log(data)
+            console.error("Aucune ville trouvée pour ces coordonnées");
+            return null;
+        }
+
+        console.log(data.features[0].properties.city)
+        return data.features[0].properties.city;
+
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+// getCityByCoordinates(47.20407866982331, -1.5630556302723189)

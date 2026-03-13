@@ -137,8 +137,56 @@ export function calculateDistance(point1, point2, units = 'kilometers') {
  * @param {string} coordField - Nom du champ contenant les coords
  * @returns {Array}
  */
-export function findNearestArticles(articles, centre, limit = 10, coordField = '_latlngmarker') {
+export function findNearestArticles(articles, centre, limit = 20, coordField = '_latlngmarker') {
   return filterArticlesByRadius(articles, centre, 99999, coordField).slice(0, limit);
+}
+
+
+/**
+ * Retourne la distance entre un centre et le dernier article d'une liste.
+ * Les articles sont supposés déjà triés par date décroissante (du plus récent au plus ancien),
+ * comme renvoyé par l'API (ORDER BY "Post Modified Date" DESC).
+ * Ainsi, le dernier élément du tableau est l'article le plus ancien parmi ceux passés.
+ *
+ * @param {Array}  articles   - Tableau d'articles (avec coordonnées dans '_latlngmarker')
+ * @param {Object} centre     - Point de départ { latitude: number, longitude: number }
+ * @param {string} coordField - Nom du champ coordonnées (défaut: '_latlngmarker')
+ * @returns {{ article: Object, distance: number }|null}
+ *   Un objet avec l'article et sa distance en km, ou null si impossible à calculer.
+ */
+export function getLastArticleDistance(articles, centre, coordField = '_latlngmarker') {
+  if (!articles || !Array.isArray(articles) || articles.length === 0) {
+    console.warn('⚠️ getLastArticleDistance : articles doit être un tableau non vide');
+    return null;
+  }
+
+  if (!centre || typeof centre.latitude !== 'number' || typeof centre.longitude !== 'number') {
+    console.warn('⚠️ getLastArticleDistance : centre doit contenir latitude et longitude valides');
+    return null;
+  }
+
+  // Le dernier élément = article le plus ancien dans la liste triée DESC
+  const lastArticle = articles[articles.length - 1];
+
+  const coords = parseCoordinates(lastArticle[coordField]);
+  if (coords.lat === null || coords.lng === null) {
+    console.warn('⚠️ getLastArticleDistance : coordonnées manquantes pour le dernier article', lastArticle);
+    return null;
+  }
+
+  try {
+    const centrePoint  = turf.point([centre.longitude, centre.latitude]);
+    const articlePoint = turf.point([coords.lng, coords.lat]);
+    const distance = turf.distance(centrePoint, articlePoint, { units: 'kilometers' });
+
+    return {
+      article:  lastArticle,
+      distance: Math.round(distance * 100) / 100  // Arrondi à 2 décimales
+    };
+  } catch (error) {
+    console.warn('⚠️ getLastArticleDistance : erreur calcul distance', error);
+    return null;
+  }
 }
 
 /**
@@ -180,32 +228,3 @@ function afficherResultats(centre, rayon, resultats) {
   console.log('====================================================\n');
 }
 
-// test-fetch.js
-import fetch from 'node-fetch';           // omit if Node ≥18
-
-const URL = 'http://localhost:8080/vivant/api/articles';
-
-(async () => {
-  try {
-    const res = await fetch(URL);
-    const articles = await res.json();
-    console.log('received', articles.length, 'articles');
-
-    const centreTest = { latitude: 46.16164, longitude: -1.1079 };
-    const rayonTest = 50;
-
-    // call one of your util functions just to be sure it works
-    const near = filterArticlesByRadius(
-      articles,
-      centreTest,
-      rayonTest
-    );
-
-    console.log(near)
-
-    //afficherResultats(centreTest, rayonTest, near);
-
-  } catch (e) {
-    console.error(e);
-  }
-})();

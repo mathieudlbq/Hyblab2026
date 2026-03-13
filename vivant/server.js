@@ -39,7 +39,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 "ID" INTEGER PRIMARY KEY,
                 "Title" TEXT,
                 "Content" TEXT,
-                "Date" TEXT,
+                "Date" DATE,
                 "Permalink" TEXT,
                 "Image URL" TEXT,
                 "Image Title" TEXT,
@@ -56,7 +56,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 "_yoast_wpseo_metadesc" TEXT,
                 "_latlngmarker" TEXT,
                 "Slug" TEXT,
-                "Post Modified Date" TEXT
+                "Post Modified Date" DATE
             )`);
             
             console.log('Table "articles" prête.');
@@ -69,6 +69,13 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 "_yoast_wpseo_content_score", "_yoast_wpseo_metadesc", "_latlngmarker", "Slug", "Post Modified Date"
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
+            // Convertit une chaîne en date ISO (YYYY-MM-DD) ou null si invalide
+            const parseDate = (value) => {
+                if (!value || value.trim() === '') return null;
+                const d = new Date(value.trim());
+                return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+            };
+
             let rowCount = 0;
 
             // 3. Lecture du CSV et insertion
@@ -80,14 +87,16 @@ const db = new sqlite3.Database(dbPath, (err) => {
                         return;
                     }
                     
+                    //Trim sur les images à l'endroit du tube 
+                    const imageURL = row['Image URL'].split('|')[0];;
                     stmt.run(
-                        (row['ID'] || row['\ufeffID'] || row['\uFEFFID']), row['Title'], row['Content'], row['Date'], row['Permalink'], 
-                        row['Image URL'], row['Image Title'], row['Image Alt Text'], row['Image Featured'], 
+                        (row['ID'] || row['\ufeffID'] || row['\uFEFFID']), row['Title'], row['Content'], parseDate(row['Date']), row['Permalink'], 
+                        imageURL, row['Image Title'], row['Image Alt Text'], row['Image Featured'], 
                         row['Attachment URL'], row['Catégories'], row['Étiquettes'], row['categorie_tag'], row['_post_review_box_title'], 
                         row['_yoast_wpseo_primary_category'] || null, 
                         row['_yoast_wpseo_estimated-reading-time-minutes'] || null, 
                         row['_yoast_wpseo_content_score'] || null, 
-                        row['_yoast_wpseo_metadesc'], row['_latlngmarker'], row['Slug'], row['Post Modified Date']
+                        row['_yoast_wpseo_metadesc'], row['_latlngmarker'], row['Slug'], parseDate(row['Post Modified Date'])
                     );
                     rowCount++;
                 })
