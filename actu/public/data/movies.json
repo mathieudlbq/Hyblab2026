@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "TITANIC",
-    "image": "img/podium/titanic.jpg",
+    "image": "img/podiumTest/titanic.jpg",
     "rank": 1,
     "score": 95,
     "liked": true,
@@ -14,7 +14,7 @@
   {
     "id": 2,
     "title": "0",
-    "image": "img/podium/0.jpg",
+    "image": "img/podiumTest/0.jpg",
     "rank": 2,
     "score": 92,
     "liked": false,
@@ -26,7 +26,7 @@
   {
     "id": 3,
     "title": "0",
-    "image": "img/podium/0.jpg",
+    "image": "img/podiumTest/0.jpg",
     "rank": 3,
     "score": 88,
     "liked": true,
@@ -38,7 +38,7 @@
   {
     "id": 4,
     "title": "BLACK PANTHER",
-    "image": "img/podium/blackPanther.png",
+    "image": "img/podiumTest/blackPanther.png",
     "rank": 4,
     "score": 75,
     "liked": false,
@@ -50,7 +50,7 @@
   {
     "id": 5,
     "title": "LA LA LAND",
-    "image": "img/podium/lalaland.png",
+    "image": "img/podiumTest/lalaland.png",
     "rank": 5,
     "score": 67,
     "liked": true,
@@ -62,7 +62,7 @@
   {
     "id": 6,
     "title": "0",
-    "image": "img/podium/0.jpg",
+    "image": "img/podiumTest/0.jpg",
     "rank": 6,
     "score": 62,
     "liked": false,
@@ -74,7 +74,7 @@
   {
     "id": 7,
     "title": "0",
-    "image": "img/podium/0.jpg",
+    "image": "img/podiumTest/0.jpg",
     "rank": 7,
     "score": 56,
     "liked": false,
@@ -86,7 +86,7 @@
   {
     "id": 8,
     "title": "0",
-    "image": "img/podium/0.jpg",
+    "image": "img/podiumTest/0.jpg",
     "rank": 8,
     "score": 48,
     "liked": false,
