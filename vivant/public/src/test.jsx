@@ -10,8 +10,10 @@ import path2Url from './assets/paths/2.svg';
 import path3Url from './assets/paths/3.svg';
 import path1PointsRaw from './assets/paths/pathPoints/1.svg?raw'
 import path1Points from './assets/paths/pathPoints/1.svg'
-// import path2Points from './assets/paths/pathPoints/2.svg'
-// import path3Points from './assets/paths/pathPoints/3.svg'
+import path2PointsRaw from './assets/paths/pathPoints/2.svg?raw'
+import path2Points from './assets/paths/pathPoints/2.svg'
+import path3PointsRaw from './assets/paths/pathPoints/2.svg?raw'
+import path3Points from './assets/paths/pathPoints/3.svg'
 
 import up_straight from './assets/mr_patate/up_straight.svg';
 import up_left from     './assets/mr_patate/up_left.svg';
@@ -52,8 +54,8 @@ const ESPACEMENT = 0.10;
 
 const dicoPaths = {
   path1: { raw: path1Raw, svg: path1Url, points: path1Points, pointsRaw: path1PointsRaw },
-  path2: { raw: path2Raw, svg: path2Url, points: path1Points, pointsRaw: path1PointsRaw },
-  path3: { raw: path3Raw, svg: path3Url, points: path1Points, pointsRaw: path1PointsRaw }
+  path2: { raw: path2Raw, svg: path2Url, points: path2Points, pointsRaw: path2PointsRaw },
+  path3: { raw: path3Raw, svg: path3Url, points: path3Points, pointsRaw: path3PointsRaw }
 };
 
 const posCyclist = {
