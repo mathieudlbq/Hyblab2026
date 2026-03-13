@@ -6,7 +6,7 @@ const path = require('path');
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const linkedom = require("linkedom");
-const linkedom = require("linkedom");
+const fs = require("fs");
 
 app.use(cookieParser());
 
@@ -75,43 +75,6 @@ function lastWednesday() {
   return today
 }
 
-app.get('/getAffiches', async function ( req, res ) {
-    const lastDate = lastWednesday();
-    const day = String(lastDate.getDate()).padStart(2, "0");
-    const month = String(lastDate.getMonth()+1).padStart(2, "0");
-    const year = String(lastDate.getFullYear()); 
-
-    if(!fs.existsSync(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`)){
-        
-        const link = `https://cinema.actu.fr/semaine/${year}-${month}-${day}`;
-
-        const resp = await fetch(link);
-        const html = await resp.text();
-
-        const document  = new linkedom.DOMParser().parseFromString(html, "text/html");
-        const fiche = document?.body.querySelectorAll(".fiche-film");
-        const ficheObjs = [];
-        for(const f of fiche){
-            const title = f?.querySelector(".fiche-film--description>a>h2").textContent.trim();
-            const realisateur = f?.querySelector(".fiche-film--description>span.fiche-film--description--no-gap>a").textContent.trim();
-            const date = f?.querySelector(".fiche-film--description>span.fiche-film--date>a").textContent.trim();
-            const image = f?.querySelector(".media>img")?.getAttribute("src").replace("_thumb","");
-            console.log(title);
-            console.log(realisateur);
-            console.log(date);
-            console.log(image);
-            ficheObjs.push({title:title,real:realisateur,date:date,affiche:image});
-        }
-        fs.writeFileSync(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`, JSON.stringify(ficheObjs, null, 2));
-    }
-    fs.readFile(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`, "utf8", function (err, fileData) {
-        if (err) {
-            res.json({error:"Les données n'ont pas pu être récupérés !"});
-            return;
-        }
-        res.json(JSON.parse(fileData));
-    });
-} );
 
 // async function getCineActuHTML(){
 //     const res = await fetch("http://localhost:8080/actu/api/poly");
@@ -138,9 +101,27 @@ app.get('/getAffiches', async function ( req, res ) {
 // ROUTES FILMS
 
 app.get('/film-week', async function ( req, res ) {
-    const { last_date } = await GetLastDate();
-    const films = await GetFilmsByDate(last_date);
-    res.json(films);
+    // const { last_date } = await GetLastDate();
+    // const films = await GetFilmsByDate(last_date);
+
+
+    const lastDate = lastWednesday();
+    const day = String(lastDate.getDate()).padStart(2, "0");
+    const month = String(lastDate.getMonth()+1).padStart(2, "0");
+    const year = String(lastDate.getFullYear()); 
+
+    if(!fs.existsSync(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`)){
+        
+        const ficheObjs = await recuperation_film_site();
+        fs.writeFileSync(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`, JSON.stringify(ficheObjs, null, 2));
+    }
+    fs.readFile(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`, "utf8", function (err, fileData) {
+        if (err) {
+            res.json({error:"Les données n'ont pas pu être récupérés !"});
+            return;
+        }
+        res.json(JSON.parse(fileData));
+    });
 } );
 
 app.get('/film-like', async (req, res) => {
@@ -257,15 +238,46 @@ function generateToken(){
     return token;
 }
 
+function normalize(text) {
+    return text
+        .toLowerCase()
+        .normalize("NFD")                 // sépare les accents
+        .replace(/[\u0300-\u036f]/g, "")  // supprime les accents
+        .replace(/[\u200B-\u200D\uFEFF]/g, "") // zero-width space
+        .replace(/['’]/g, "")             // supprime les apostrophes
+        .trim();
+}
 
-async function recuperation_film(){
+async function recuperation_film_site(){
+    const lastDate = lastWednesday();
+    const day = String(lastDate.getDate()).padStart(2, "0");
+    const month = String(lastDate.getMonth()+1).padStart(2, "0");
+    const year = String(lastDate.getFullYear()); 
+    
+    // Site Fiche ciné
 
+    const link = `https://cinema.actu.fr/semaine/${year}-${month}-${day}`;
+
+    const resp = await fetch(link);
+    const html2 = await resp.text();
+
+    const document  = new linkedom.DOMParser().parseFromString(html2, "text/html");
+    const fiche = document?.body.querySelectorAll(".fiche-film");
+    const ficheObjs = [];
+    for(const f of fiche){
+        const title = f?.querySelector(".fiche-film--description>a>h2").textContent.trim();
+        const realisateur = f?.querySelector(".fiche-film--description>span.fiche-film--description--no-gap>a").textContent.trim();
+        const date = f?.querySelector(".fiche-film--description>span.fiche-film--date>a").textContent.trim();
+        const image = f?.querySelector(".media>img")?.getAttribute("src").replace("_thumb","");
+        ficheObjs.push({title:title,real:realisateur,date:date,affiche:image});
+    }
+
+    // Site Critique
     const res = await fetch("https://actu.fr/cinema/sorties-films/planetes-scarlet-et-l-eternite-le-testament-d-ann-lee-nos-critiques-des-sorties-du-11-mars_63923715.html",{"Content-Type":"text/html; charset=UTF-8"});
     const html = await res.text();
     // console.log(html);
 
     const doc = new linkedom.DOMParser().parseFromString(html,"text/html");
-    //console.log(dom.window.document.querySelector("h1").textContent);
 
     const films = [];
     const film = doc.querySelectorAll("h2");
@@ -294,32 +306,36 @@ async function recuperation_film(){
             const critique = c.textContent;
             let bande_annonce = null;
 
-            bande_annonces.forEach((e)=>{
+            const ba= bande_annonces.filter((e)=>{
                 let title = e.querySelector("iframe").getAttribute("title");
-                title = title.toLowerCase();
-                let regex = new RegExp(titre)
-                const est_film = regex.test(title);
-                console.log(regex, title)
-                console.log(est_film);
-                if(est_film|| bande_annonce == null){
-                    bande_annonce = e.querySelector("iframe").getAttribute("data-maybe-src");
-                }
-            })
+                title = normalize(title);
+                let match = title.includes(normalize(titre));
+                return match;
+            });
+            if(ba.length>0){
+                bande_annonce = ba[0].querySelector("iframe").getAttribute("data-maybe-src");
             }
+            
+            const fiches = ficheObjs.filter((f)=> normalize(f.title).includes(normalize(titre)));
+            let ficheObj = null;
+            if(fiches.length>0){
+                ficheObj = fiches[0];
+            }
+            const attributs_film = {
+                "titre" : titre,
+                "realisateur" :real,
+                "critique" :critique,
+                "nb_etoile" : etoiles,
+                "bande_annonce" : bande_annonce,
+                "affiche":ficheObj?.affiche,
+                "date":ficheObj?.date
+            }
+            films.push(attributs_film);
+        }
+    }
 
-            // const attributs_film = {
-            //     "titre" : titre,
-            //     "realisateur" :real,
-            //     "critique" :critique,
-            //     "nb_etoile" : etoiles,
-            //     "bande_annonce" : bande_annonce,
-            // }
-            // console.log(attributs_film);
-            // films.push(attributs_film);
-            }
     return films;
 };
-recuperation_film();
 // =========================
 // ========== POST =========
 // =========================
