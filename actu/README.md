@@ -1,15 +1,23 @@
 # Descriptif du projet
 
-Porteur de projet :
+Porteur de projet : Actu.fr
 
-Sujet :
+Sujet : "Pimper" les sorties ciné de la semaine ! 
 
-Nom d'équipe :
+Nom d'équipe : Popcorn
 
 Participants : 
 
-- EDNA :
+- EDNA : 
+1. Catarina MO
+2. Elodie BAUDOUIN
+3. Yufan ZHOU
+
 - Polytech :  
+1. Bryan LEVY
+2. Coralie TOSTEN
+3. Floran MARTEL
+4. Xuan JING
 
 
 

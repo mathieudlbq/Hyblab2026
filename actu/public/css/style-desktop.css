@@ -11,7 +11,7 @@
 body{
     background-color: black;
     color: white;
-    overflow: hidden;   /* to avoid slider bugs on some browsers */
+    /* overflow: hidden;   to avoid slider bugs on some browsers */
     font-family: sans-serif;
 }
 
