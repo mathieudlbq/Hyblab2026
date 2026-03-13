@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCityByCoordinates } from '../../../utils/coordinate';
 import { findNearestArticles, getLastArticleDistance } from '../../../utils/dist';
+import CityModal from '../components/CityModal';
 import './Home.css';
 import RoutePoinillee from './../assets/home_illustrations/Pointillés + Bonhomme.svg';
 import TraitJaune from './../assets/home_illustrations/Trait Jaune.svg';
@@ -51,6 +52,11 @@ const Home = () => {
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [articles, setArticles] = useState([]);
   const [activeBtn, setActiveBtn] = useState(null);
+
+  // ── Modale CityModal ──
+  const [cityError, setCityError] = useState('');
+  const [isModalLoading, setIsModalLoading] = useState(false);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     fetch('http://localhost:8080/vivant/api/articles')
@@ -155,8 +161,37 @@ const Home = () => {
     }
   };
 
+  const handleCitySubmit = ({ name, lat, lng }) => {
+    setCityError('');
+    setIsModalLoading(true);
+    try {
+      const centre = { latitude: lat, longitude: lng };
+      const nearest = findNearestArticles(articles, centre, N_ARTICLES);
+      const lastDist = getLastArticleDistance(nearest, centre);
+
+      setIsModalLoading(false);
+      modalRef.current?.close();
+
+      navigate('/test', {
+        state: {
+          hasCity: true,
+          lat: lat,
+          long: lng,
+          name: name,
+          articles: (nearest && nearest.length > 0) ? nearest : articles,
+          lastArticleDist: (nearest && nearest.length > 0) ? lastDist : null,
+        },
+      });
+    } catch (err) {
+      console.error('Erreur de calcul :', err);
+      setCityError('Erreur de calcul.');
+      setIsModalLoading(false);
+    }
+  };
+
   return (
-    <div className="home-page">
+    <>
+    <div className={`home-page transition-all duration-300`}>
 
       {/* ── Titre ── */}
       <div className="text-center text-xl">
@@ -223,9 +258,7 @@ const Home = () => {
         <button
           className="home-btn"
           onClick={() =>
-            handlePress('ville', () =>
-              navigate('/test', { state: { hasCity: false, articles } })
-            )
+            handlePress('ville', () => modalRef.current?.showModal())
           }
           style={{ position: 'relative', zIndex: 1 }}
         >
@@ -255,6 +288,20 @@ const Home = () => {
 
       </div>
     </div>
+    
+    <CityModal
+      isOpen={false} // Laissé contrôlé via modalRef depuis Home
+      cityError={cityError}
+      isLoading={isModalLoading}
+      nArticles={N_ARTICLES}
+      onSubmit={handleCitySubmit}
+      onSkip={() => {
+        modalRef.current?.close();
+        navigate('/test', { state: { hasCity: false, articles } });
+      }}
+      modalRef={modalRef}
+    />
+    </>
   );
 };
 

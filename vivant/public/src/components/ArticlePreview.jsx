@@ -5,7 +5,7 @@ const ArticlePreview = ({ articleData }) => {
   const metadesc = articleData.fullArticle?._yoast_wpseo_metadesc || "";
 
   return (
-    <div className="bg-[#f2f2f2] rounded-[36px] p-5 w-30 text-left text-black shadow-xl flex flex-col group pointer-events-auto">
+    <div className="bg-[#f2f2f2] rounded-[36px] p-5 w-80 text-left text-black shadow-xl flex flex-col group pointer-events-auto">
       {/* Contenu textuel */}
       <div className="mb-4">
         <h3 className="font-extrabold text-[19px] leading-snug mb-2">

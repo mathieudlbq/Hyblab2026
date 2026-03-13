@@ -1,8 +1,6 @@
 import { motion, useSpring, useMotionValue, useScroll } from "framer-motion";
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useLocation } from 'react-router-dom';
-import { findNearestArticles, getLastArticleDistance } from '../../utils/dist';
-import CityModal from './components/CityModal';
 import ArticlePreview from './components/ArticlePreview';
 
 // Imports des SVGs pour extraction de données (raw) et pour affichage (URL)
@@ -69,54 +67,10 @@ const InfinitePath = () => {
   const location = useLocation();
   const initialState = location.state || {};
 
-  // ── État de la carte / articles ──
+  // ── État provenant du Router ──
   const [lat, setLat] = useState(initialState.lat ?? null);
   const [long, setLong] = useState(initialState.long ?? null);
-  const [cityName, setCityName] = useState(initialState.name ?? '');
-  const [hasCity, setHasCity] = useState(initialState.hasCity ?? false);
   const [articles, setArticles] = useState(initialState.articles ?? []);
-  const [lastArticleDist, setLastArticleDist] = useState(initialState.lastArticleDist ?? null);
-  
-  // ── Modale CityModal ──
-  const [cityError, setCityError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const modalRef = useRef(null);
-
-  useEffect(() => {
-    if (!hasCity) {
-      modalRef.current?.showModal();
-    }
-  }, [hasCity]);
-
-  const handleCitySubmit = ({ name, lat, lng }) => {
-    setCityError('');
-    setIsLoading(true);
-    try {
-      const centre = { latitude: lat, longitude: lng };
-      const allArticles = (initialState?.articles?.length > 0) ? initialState.articles : articles;
-      const nearest = findNearestArticles(allArticles, centre, NB_ARTICLES);
-      const lastDist = getLastArticleDistance(nearest, centre);
-
-      setLat(lat);
-      setLong(lng);
-      setCityName(name);
-      setHasCity(true);
-
-      if (nearest && nearest.length > 0) {
-        setArticles(nearest);
-        setLastArticleDist(lastDist);
-      } else {
-        setArticles(allArticles);
-        setLastArticleDist(null);
-      }
-      setIsLoading(false);
-      modalRef.current?.close();
-    } catch (err) {
-      console.error('Erreur :', err);
-      setCityError('Erreur de calcul.');
-      setIsLoading(false);
-    }
-  };
 
   const mapObjectsConfig = useMemo(() => {
     return articles.map((article, index) => {
@@ -324,7 +278,7 @@ const InfinitePath = () => {
     <>
     <div 
       ref={containerRef} 
-      className={`relative transition-all duration-700 ${!hasCity ? 'blur-sm pointer-events-none select-none' : ''}`} 
+      className={`relative transition-all duration-700`} 
       style={{ height: dynamicHeight }}
     >
       <div className="sticky top-0 mask-y-from-75% mask-y-to-90% h-screen overflow-hidden flex justify-center [perspective:1200px]" >
@@ -457,19 +411,6 @@ const InfinitePath = () => {
         </div>
       </div>
     </div>
-    
-    <CityModal
-      isOpen={!hasCity}
-      cityError={cityError}
-      isLoading={isLoading}
-      nArticles={NB_ARTICLES}
-      onSubmit={handleCitySubmit}
-      onSkip={() => {
-        setHasCity(true);
-        modalRef.current?.close();
-      }}
-      modalRef={modalRef}
-    />
     </>
   );
 };
