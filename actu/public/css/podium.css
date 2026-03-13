@@ -369,7 +369,8 @@ html, body {
   
 
 
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: 0;  
   position: relative;
   display: flex;
   justify-content: right;
@@ -541,7 +542,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 76%;
   width: 10%;
   flex-shrink: 0;
   cursor: pointer;
