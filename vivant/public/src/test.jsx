@@ -50,7 +50,7 @@ const articles = [
   { id: 111, nom: "Article 11", text: "On passe sur le 2ème chemin" },
 ];
 
-const ESPACEMENT = 0.10;
+const ESPACEMENT = 0.30;
 
 const dicoPaths = {
   path1: { raw: path1Raw, svg: path1Url, points: path1Points, pointsRaw: path1PointsRaw },
@@ -87,7 +87,7 @@ const InfinitePath = () => {
   const pathRefs = useRef([]);
   const [pathsData, setPathsData] = useState([]);
   const [pathsPointsData, setPathsPointsData] = useState([]);
- 
+  
   const [cyclistX, setCyclistX] = useState("50%");
   const pathY = useMotionValue("calc(85vh - 100%)");
  
@@ -97,6 +97,7 @@ const InfinitePath = () => {
   const [cyclistSvgPos, setCyclistSvgPos] = useState(posCyclist.up_right);
  
   const [articlePositions, setArticlePositions] = useState({});
+  const SignDecalage = 12
  
   const SPEED_DESKTOP = 5000;
   const SPEED_MOBILE  = 2500;
@@ -315,7 +316,7 @@ const InfinitePath = () => {
                       <img 
                         src={c.type === "tree" ? treeSvg : mileSvg} 
                         alt="element" 
-                        className="xl:h-[40%] xl:w-[40%] w-[30%] h-[30%] object-contain drop-shadow-md" // Ajuste w-24 h-24 selon la taille voulue
+                        className="xl:h-[40%] xl:w-[40%] w-[15vw] h-[15vh] object-contain drop-shadow-md" // Ajuste w-24 h-24 selon la taille voulue
                       />
                     </div>
                   );
@@ -325,16 +326,22 @@ const InfinitePath = () => {
                   .filter(obj => obj.pathIndex === i)
                   .map(obj => {
                     const pos = articlePositions[obj.id];
-                    const signSvg = elements.sign[0];
+                    const signSvg = elements.sign[obj.id % elements.sign.length];
                     if (!pos) return null;
+                    const isOnRightSide = pos.xPercent > 50;
+    
+                    // On calcule une position "bridée" pour éviter de coller aux bords de la div
+                    // On garde une marge de sécurité (ex: 10% de chaque côté)
+                    const safeLeft = Math.max(10, Math.min(90, pos.xPercent + (isOnRightSide ? SignDecalage : -SignDecalage)));
+                    
                     return (
                       <div
                         key={obj.id}
                         className="absolute z-40 cursor-pointer flex flex-col items-center gap-20"
                         style={{
-                          left:            `${pos.xPercent + (pos.xPercent > 50 ? 10 : -10)}%`,
+                          left:            `${safeLeft}%`,
                           top:             `${pos.yPercent}%`,
-                          transform:       "rotateX(-50deg) translateZ(10px)",
+                          transform:       "translate(-50%, -100%) rotateX(-50deg) translateZ(40px)",
                           transformStyle:  "preserve-3d",
                           transformOrigin: "center bottom",
                           willChange:      "transform",
@@ -349,7 +356,7 @@ const InfinitePath = () => {
                         <img 
                           src={signSvg} 
                           alt="element" 
-                          className="xl:h-[30%] xl:w-[30%] w-[20%] h-[20%] object-contain drop-shadow-md" // Ajuste w-24 h-24 selon la taille voulue
+                          className="xl:h-[7vh] xl:w-[7vw] w-[7vw] h-[7vh] object-contain drop-shadow-md" // Ajuste w-24 h-24 selon la taille voulue
                         />
                       </div>
                     );
@@ -368,21 +375,6 @@ const InfinitePath = () => {
                     />
                   </svg>
                 )}
-
-                
- 
-                {/*
-                  Chaque article est placé sur le sol du chemin avec left/top (%),
-                  puis translateZ(120px) le "pousse" vers le spectateur dans l'axe
-                  Z du monde 3D — il se dresse hors du plan incliné comme un panneau.
- 
-                  - translate(-50%, 0%)  → centre sur le point, base au sol
-                  - translateZ(120px)    → élève la carte dans l'espace 3D
-                  - transformOrigin bottom center → le pied reste ancré au sol
- 
-                  Tweaker translateZ pour ajuster la hauteur apparente.
-                */}
-                
                   
               </div>
             ))}
@@ -390,7 +382,7 @@ const InfinitePath = () => {
  
           {/* VÉLO */}
           <motion.div
-            className="absolute bottom-[8.5%] z-50 xl:w-35 xl:h-35 w-20 h-20 pointer-events-none"
+            className="absolute xl:bottom-[8.5vh] bottom-[10vh] z-50 xl:w-35 xl:h-35 w-20 h-20 pointer-events-none"
             style={{
               left:            cyclistX,
               transform:       "translateX(-50%) translateZ(20px) rotateX(-50deg)",
