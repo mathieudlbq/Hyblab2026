@@ -1,0 +1,93 @@
+{
+  "titreEnquete" : "Intoxication minière en Bretagne",
+  "chapeauEnquete" : "« Vous voyez cette poussière ? Nos animaux la boivent, nos enfants la respirent », s’inquiète une habitante de Glomel.",
+  "imgPath" :"img/mainDraw.jpg",
+  "dessinPath" : "img/logo_hyblab.png",
+  "nVolet": 2,
+  "volet" : [
+    {
+    "titreVolet" : "La mine d’Imerys contamine la réserve naturelle",
+    "nBullet" : 3,
+    "bullet" : [
+      [{"type" : "title", "content" : "La mine d’Imerys contamine la réserve naturelle de Glomel"},
+      {"type" : "paragraph", "content" : "Des ruisseaux protégés, une réserve naturelle… et à quelques kms, une mine à ciel ouvert qui déverse dans la nature des métaux lourds jusqu’à 60 fois supérieures aux valeurs guides."}
+      ],
+      [{ "type" : "paragraph", "content" : "« La mine d’Imérys utilise la réserve naturelle  régionale [Magoar Penvern] \n comme station d’épuration » résument certains riverains de Glomel."},
+      {"type" : "img", "content": "img/mainDraw.jpg"}
+      ],
+      [{ "type" : "paragraph", "content" : "La présence élevée d’arsenic et de cadmium, deux substances <b>cancérigènes, mutagènes et reprotoxiques </b>, n’a pourtant jamais été signalée aux habitants par Imerys. "},
+      { "type" : "paragraph", "content" : "Imérys cache ses impacts réels sous des formules ambiguës, déclarant même n’avoir aucun impact."}
+      ]
+    ],
+    "extendedContent": [
+      { "type" : "text",
+        "content" : "L'équipe de Splann ! a prélevé des sédiments dans un cours d'eau de la réserve naturelle régionale."
+      },
+      { "type" : "text",
+        "content" : "Nos analyses révèlent des concentrations de métaux lourds jusqu'à 60 fois supérieures aux valeurs guides pour un bon état écologique des sédiments."
+      },
+      {
+        "type" : "img",
+        "content" : "https://splann.org/wp-content/uploads/2024/11/Rejets-Imerys-800x441.png"
+      },
+      { "type" : "text",
+        "content" : "Les métaux lourds détectés dans les analyses comprennent notamment le nickel et le cobalt, jusqu'à vingt fois supérieures aux valeurs de référence."
+      },
+      { "type" : "text",
+        "content" : "Les prélèvements réalisés en amont du site industriel ne montrent aucune contamination notable. À l'inverse, les échantillons prélevés en aval présentent des niveaux de métaux lourds particulièrement élevés. "
+      },
+      { "type" : "text",
+        "content" : "La contamination se propage le long du cours d'eau. Plusieurs kilomètres en aval, les concentrations restent supérieures aux valeurs guides. Les ruisseaux qui serpentent dans les sous-bois transportent les particules contaminées."
+      },
+      { "type" : "text",
+        "content" : "Ces concentrations élevées de métaux lourds peuvent s'accumuler dans les sédiments et les organismes aquatiques."
+      },
+      { "type" : "text",
+        "content" : "Les scientifiques soulignent que ces niveaux de contamination sont incompatibles avec un bon état écologique des cours d'eau."
+      },
+      { "type" : "text",
+        "content" : "Imerys n'a pas informé la population de la présence d'arsenic et de cadmium, tous deux cancérigènes, mutagènes et reprotoxiques."
+      },
+      { "type" : "text",
+        "content" : "Ce manque de transparence sur les réels problèmes, enflamme le combat des riverains pour la vérité."
+      }
+    ]
+    },
+    {
+    "titreVolet" : "Dans les côtes d’Armor, Imerys mine la démocratie locale",
+    "nBullet" : 4,
+    "bullet" : [
+      [{"type" : "title", "content" : "Dans les côtes d’Armor, Imerys mine la démocratie locale"},
+      {"type" : "paragraph", "content" : "Imerys a annoncé vouloir étendre son exploitation, et creuser une nouvelle fosse. Le soutien à Imerys est un enjeu fort des élections municipales et une source de tensions au sein de la population."}
+      ],
+      [{ "type" : "paragraph", "content" : "« La population locale se divise donc entre ceux qui défendent les emplois et ceux qui s’opposent aux nuisances de la mine."},
+      {"type" : "img", "content": "img/mainDraw.jpg"}
+      ],
+      [{ "type" : "paragraph", "content" : "Imerys soigne son image locale : subventions aux associations, dont celle qui gère la réserve naturelle, et prétend abonder de manière significative aux budgets des collectivités locales pour s’assurer le soutien de la mairie."}
+      ],
+      [{
+        "type" : "paragraph", "content" : "La multinationale détient aussi 565 hectares, soit 10 % des terres agricoles de la commune, dont une partie est louée à des agriculteurs. Un moyen de pression potentiel."
+      },
+      {
+        "type": "paragraph", "content":"Pour faciliter l’exploitation d’Imerys, rien ne semble impossible : détourner des routes, effacer un hameau, déplacer des lignes électriques ou transférer des milliers de m³ d’eau entre bassins versants."
+    }]
+    ],
+    "extendedContent": [
+      { "type" : "text",
+        "content" : "Le soutien à Imerys, qui veut creuser une nouvelle fosse, est un enjeu fort des élections municipales et une source de tensions au sein de la population."
+      },
+      { "type" : "text",
+        "content" : "L'entreprise se sert des salariés et de la menace du chômage comme d'un bouclier. Tous les salariés sont inquiets. Si la demande d'extension est refusée, l'exploitation s'arrêtera en 2037."
+      },
+      { "type" : "text",
+        "content" : " « Le climat général est détérioré et la cohésion des habitants se fissure à Glomel. » Les opposants dénoncent une « technique de la camisole de force » et craignent des représailles : « On hésite à communiquer car on se demande dans quelle mesure on ne va pas servir d’exemple, pour que les autres se taisent. »"
+      },
+      { "type" : "text",
+        "content" : " L'issue finale du projet : « Le préfet donne son accord le 20 juin 2024 pour l’extension de la carrière Imerys. » Cette décision marque « la fin du dialogue et de la pantomime débonnaire à laquelle s’est prêtée la multinationale avec les riverains. »"
+      }
+    ]
+    }],
+  "reponse" : "",
+  "auteur" : "Célia IZOARD",
+  "mainEnquete" : "https://splann.org/enquete/intoxication-miniere-en-bretagne/mine-imerys-contamine-reserve-naturelle-glomel/"
+}

@@ -15,6 +15,18 @@ body{
     font-family: sans-serif;
 }
 
+p {
+    font-size: 40%;
+}
+
+h3 {
+    font-size:50%;
+}
+
+#extended-content {
+    background-color: black;
+    text-decoration-color: white;
+}
 /* -------------- Loader --------------*/
 #loader{
     z-index: 2;
@@ -81,8 +93,8 @@ body{
 }
 
 /* Most of the elements in this demo are absolute positioned with percentages */
-#first-slide header, #second-slide header, #third-slide header, #fourth-slide header, #fifth-slide header, #sixth-slide header{
-    text-align: center;
+#title-slide header, #credit-slide header{
+    text-align: left;
     width: 100%;
     top: 10%;
     position: absolute;
@@ -90,7 +102,14 @@ body{
     z-index: 2;
 }
 
-#logo-hyblab{
+.chapeau {
+    font-size:150%;
+    text-align: left;
+    top: 100%;
+    position: absolute;
+}
+
+.imgPrincipale{
     text-align: center;
     width: 50%;
     left: 50%; /* center the logo, in interaction with the negative margin-left */
@@ -117,18 +136,6 @@ main > section{
     background-image: url('../img/background.svg');
     background-size: 100% auto; /* background is full width and height is proportional to width */
     background-position: bottom; /* background is bottom aligned */
-}
-
-/* Footer of last slide is at the bottom and content is centered */
-#first-slide footer, #third-slide footer, #fifth-slide footer, #sixth-slide footer{
-    bottom: 5%;
-    position: absolute;
-    box-sizing: border-box; /* So that padding is not added to width (and width: 100% works) */
-    width: 100%; /* could also use  width: calc(100% - 2em) if not using box-sizing */
-    font-size: 20%;
-    text-align: center;
-    padding: 1em;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
 
