@@ -8,7 +8,8 @@
     "liked": true,
     "critic_rank": 3,
     "critic_score": 88,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "James Cameron"
   },
   {
     "id": 2,
@@ -19,7 +20,8 @@
     "liked": false,
     "critic_rank": 5,
     "critic_score": 72,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "aucun"
   },
   {
     "id": 3,
@@ -30,7 +32,8 @@
     "liked": true,
     "critic_rank": 2,
     "critic_score": 91,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "aucun"
   },
   {
     "id": 4,
@@ -41,7 +44,8 @@
     "liked": false,
     "critic_rank": 4,
     "critic_score": 78,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "Ryan Coogler"
   },
   {
     "id": 5,
@@ -52,7 +56,8 @@
     "liked": true,
     "critic_rank": 1,
     "critic_score": 97,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "Damien Chazelle"
   },
   {
     "id": 6,
@@ -63,7 +68,8 @@
     "liked": false,
     "critic_rank": 6,
     "critic_score": 60,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "aucun"
   },
   {
     "id": 7,
@@ -74,7 +80,8 @@
     "liked": false,
     "critic_rank": 7,
     "critic_score": 51,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "aucun"
   },
   {
     "id": 8,
@@ -85,6 +92,7 @@
     "liked": false,
     "critic_rank": 8,
     "critic_score": 43,
-    "critic_name": "Lauri-Matti Parppei"
+    "critic_name": "Lauri-Matti Parppei",
+    "director": "aucun"
   }
 ]

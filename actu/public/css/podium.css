@@ -183,14 +183,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* border */
-.arrow{
-  display: flex;
-  flex-direction: column;
-  stroke-width: 2px;
-  stroke: #F00;
-  filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
-}
 
 /* ==================== BACK PAGE ==================== */
 .page-back {
@@ -338,29 +330,75 @@ html, body {
 
 /* ==================== LIST (FRONT) ==================== */
 .list-wrapper {
+  /* margin: 0 auto;
   position: relative;
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 0 10px;
+  
+
+  border-radius: 1.25rem;
+  border: 1px solid #FFF;
+  background: linear-gradient(
+    to bottom,
+    rgba(240, 170, 170, 0.6) 0%,   
+    rgba(255, 255, 255, 0.2) 25%,  
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  box-shadow: 3px 4px 4px 0 rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);  
+  -webkit-backdrop-filter: blur(12px);
+  height: 53%;
+  width: 75%; */
+  display: flex;
+  
+  height: 60%;
 }
 
 .list {
-  flex: 1;
+  /* flex: 1;
   display: flex;
-  flex-direction: column;
+  
   gap: 12px;
   overflow-y: auto;
   transition: all 0.4s ease;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  box-sizing: border-box;
+  box-sizing: border-box; */
+  
+
+
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: right;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 10px;
+  
+
+  border-radius: 1.25rem;
+  border: 1px solid #FFF;
+  background: linear-gradient(
+    to bottom,
+    rgba(240, 170, 170, 0.6) 0%,   
+    rgba(255, 255, 255, 0.2) 25%,  
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  box-shadow: 3px 4px 4px 0 rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);  
+  -webkit-backdrop-filter: blur(12px);
+  height: 100%;
+  width: 80%;
 }
 
 .list::-webkit-scrollbar { display: none; }
 
 .list-item {
   display: flex;
+  width: 95%;
   align-items: center;
   gap: 14px;
   padding: 10px;
@@ -392,46 +430,80 @@ html, body {
 
 .item-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-info{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .item-title {
   color: #000;
   font-family: Inter;
-  font-size: 10px;
+  font-size: 1.2rem;
   font-style: italic;
   font-weight: 400;
   line-height: normal;
 }
 
-.item-circle {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
+.item-director{
+  color: #000;
+  font-family: Inter;
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.item-rank{
+  color: rgba(255, 0, 0, 0.30);
+  text-align: center;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgba(255, 0, 0, 0.11);
+  font-family: Inter;
+  font-size: 2.25rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .bg-red { background-color: #e84040; }
-
+/* ========================list-bottom=================== */
 .item-bottom {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+
 .progress-bar {
   flex: 1;
   height: 6px;
-  background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
   overflow: hidden;
+
+  fill: rgba(255, 255, 255, 0.10);
+  box-shadow: 2px 3px 4px 0 rgba(0, 0, 0, 0.25) inset;
+  filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.25));
+}
+
+.thumb-icon{
+  filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.25));
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 2px;
+  transition: left 0.6s ease;
+}
+
+
+.progress-wrapper{
+  position: relative;
+  flex: 1;
+  margin-bottom: 4px;
 }
 
 .progress-fill {
@@ -439,13 +511,18 @@ html, body {
   background: linear-gradient(90deg, #e84040, #ff7070);
   border-radius: 3px;
   transition: width 0.6s ease;
+
+  background: #FF022C;
+  filter: blur(2px);
 }
 
 .item-percent {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
-  min-width: 32px;
-  text-align: right;
+  color: #000;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: normal;
 }
 
 /* Rank number label inside each step */
@@ -464,7 +541,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 22px;
+  height: 100%;
+  width: 10%;
   flex-shrink: 0;
   cursor: pointer;
   padding: 6px 0;
@@ -483,20 +561,21 @@ html, body {
   transition: background 0.2s;
 }
 
-.toggle-btn .arrow {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+.arrow {
   border-radius: 50%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   transition: transform 0.35s ease, border-color 0.2s;
+
+  stroke-width: 2px;
+  stroke: #F00;
+  filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .toggle-btn .arrow svg {
-  width: 8px;
-  height: 8px;
+  width: 100%;
   fill: rgba(255, 255, 255, 0.6);
   transition: transform 0.35s ease;
 }

@@ -92,7 +92,7 @@ function buildBackSide(data) {
       <img src="${movie.image}" alt="${movie.title}" class="back-item-img">
       <div class="back-item-content">
         <span class="back-item-title">${movie.title}</span>
-        <span class="back-item-critic">${movie.critic_name || ''}</span>
+        <span class="back-item-critic">${movie.director || ''}</span>
         <div class="back-item-stars">${scoreToStars(movie.critic_score)}</div>
       </div>
     `;
