@@ -1,6 +1,7 @@
 import { motion, useSpring, useMotionValue, useScroll } from "framer-motion";
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useLocation } from 'react-router-dom';
+import { findNearestArticles } from '../../utils/dist';
 import ArticlePreview from './components/ArticlePreview';
 
 // Imports des SVGs pour extraction de données (raw) et pour affichage (URL)
@@ -74,11 +75,52 @@ const InfinitePath = () => {
   const location = useLocation();
   const initialState = location.state || {};
 
+<<<<<<< HEAD
   const [articles, setArticles] = useState(initialState.articles ?? []);
+=======
+  // ── État provenant du Router ──
+  const [lat, setLat] = useState(initialState.lat ?? null);
+  const [long, setLong] = useState(initialState.long ?? null);
+  const [allArticles, setAllArticles] = useState(initialState.allArticles ?? []);
+  const cityName = initialState.name || "Point de départ";
+
+  // ── Filtre Catégories (Mobile) ──
+  const availableCategories = [
+    "Initiative personnelle/quotidienne",
+    "Entrepreneuriat",
+    "Collectifs",
+    "Service publique"
+  ];
+  
+  const [selectedCats, setSelectedCats] = useState(availableCategories);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const toggleCategory = (cat) => {
+    setSelectedCats(prev => {
+      if (prev.includes(cat)) {
+        // Bloque la désélection s'il ne reste qu'une seule catégorie
+        if (prev.length === 1) return prev;
+        return prev.filter(c => c !== cat);
+      }
+      return [...prev, cat];
+    });
+  };
+>>>>>>> f2d50e90298da4b7c6d820b49d07ae631a397758
 
   // --- CONFIG DES ARTICLES ---
   const mapObjectsConfig = useMemo(() => {
-    return articles.map((article, index) => {
+    // 1. On filtre la base de données brute selon la catégorie sélectionnée
+    const filteredAll = allArticles.filter(a => selectedCats.includes(a.categorie_tag));
+
+    // 2. On récupère les 10 plus proches si on a une position, sinon les 10 premiers
+    let closestArticles = [];
+    if (lat !== null && long !== null) {
+      closestArticles = findNearestArticles(filteredAll, { latitude: lat, longitude: long }, NB_ARTICLES);
+    } else {
+      closestArticles = filteredAll.slice(0, NB_ARTICLES);
+    }
+
+    return closestArticles.map((article, index) => {
       const globalPos = (index + 1) * ESPACEMENT;
       const pathIndex = Math.floor(globalPos) % pathList.length;
       const progress = globalPos % 1;
@@ -97,7 +139,7 @@ const InfinitePath = () => {
         }
       };
     });
-  }, [articles]);
+  }, [allArticles, selectedCats, lat, long]);
 
   const containerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -198,6 +240,26 @@ const InfinitePath = () => {
           yPercent: (point.y / data.height) * 100,
         };
       });
+
+      // ── Positionnement de la ville de départ (au tout début du premier chemin) ──
+      const data0 = pathsData[0];
+      const pathEl0 = pathRefs.current[0];
+      if (data0 && pathEl0) {
+        const length = pathEl0.getTotalLength();
+        const pStart = pathEl0.getPointAtLength(0);
+        const pEnd   = pathEl0.getPointAtLength(length);
+        const isBottomToTop = pStart.y > pEnd.y;
+        
+        // On récupère un point très proche du début (t = 0.005 pour éviter les bords tranchés)
+        const t = isBottomToTop ? 0.005 : 0.995;
+        const point = pathEl0.getPointAtLength(t * length);
+
+        positions['start_city'] = {
+          xPercent: (point.x / data0.width)  * 100,
+          yPercent: (point.y / data0.height) * 100,
+        };
+      }
+
       setArticlePositions(positions);
     }, 150);
     return () => clearTimeout(timer);
@@ -305,6 +367,48 @@ const InfinitePath = () => {
  
   return (
     <>
+    {/* ── Flottant Filtres (Mobile) ── */}
+    <div className="md:hidden fixed top-[88px] left-6 z-[9999]">
+      <button 
+        onClick={() => setIsFilterOpen(!isFilterOpen)}
+        className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg pointer-events-auto border border-gray-100 transition-transform active:scale-95"
+      >
+        {/* Trois petits points alignés */}
+        <div className="flex gap-1">
+          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+        </div>
+      </button>
+
+      {isFilterOpen && (
+        <div className="absolute top-14 left-0 bg-[#f7f7f7] rounded-[24px] p-5 shadow-2xl flex flex-col gap-4 w-64 pointer-events-auto origin-top-left border border-gray-100">
+          {availableCategories.map(cat => {
+            const isChecked = selectedCats.includes(cat);
+            return (
+              <label key={cat} className="flex items-center gap-4 cursor-pointer" onClick={(e) => {
+                e.preventDefault();
+                toggleCategory(cat);
+              }}>
+                <div 
+                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors shadow-sm ${isChecked ? 'bg-[#F6E91E]' : 'bg-white'}`}
+                >
+                  {isChecked && (
+                    <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+                <span className="text-[15px] font-medium text-black leading-tight select-none">
+                  {cat.replace('publique', 'public')} {/* Correction sémantique légère à l'affichage si besoin */}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      )}
+    </div>
+
     <div 
       ref={containerRef} 
       className={`relative transition-all duration-700`} 
@@ -330,6 +434,30 @@ const InfinitePath = () => {
                   className="w-full h-full object-cover -mt-1"
                   alt={`Path ${i}`}
                 />
+
+                {/* ── Marqueur de la ville de départ ── */}
+                {/* ── Marqueur de la ville de départ ── */}
+                {i === 0 && articlePositions['start_city'] && (
+                  <div
+                    className="absolute z-10 flex flex-col items-center pointer-events-none"
+                    style={{
+                      left: `${articlePositions['start_city'].xPercent}%`,
+                      top: `${articlePositions['start_city'].yPercent}%`,
+                      // On pousse vers le bas (50%) pour que ça apparaisse en-dessous du bout du chemin
+                      transform: "translate(-50%, 50%) rotateX(-50deg) translateZ(10px)",
+                      transformOrigin: "top center",
+                      transformStyle: "preserve-3d"
+                    }}
+                  >
+                    <div className="font-extrabold text-[18px] whitespace-nowrap flex items-center gap-2 drop-shadow-lg mt-5">
+                      <svg className="w-6 h-6 text-[#FF3B83]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                      </svg>
+                      {cityName}
+                    </div>
+                  </div>
+                )}
+
                 {pathsPointsData[i] && pathsPointsData[i].map((c, index) => {
                   const xPercent = (c.x / c.width) * 100;
                   const yPercent = (c.y / c.height) * 100;

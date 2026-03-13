@@ -102,24 +102,25 @@ const Home = () => {
               long: position.coords.longitude,
               name: cityName || 'Votre position',
               articles: nearestArticles,
+              allArticles: articles,
               lastArticleDist: lastDist,
             },
           });
         } catch {
           setIsLoadingLocation(false);
-          navigate('/carte', { state: { hasCity: false, articles } });
+          navigate('/carte', { state: { hasCity: false, articles, allArticles: articles } });
         }
       },
       () => {
         setIsLoadingLocation(false);
-        navigate('/carte', { state: { hasCity: false, articles } });
+        navigate('/carte', { state: { hasCity: false, articles, allArticles: articles } });
       }
     );
   };
 
   const handleLastArticle = () => {
     if (!articles || articles.length === 0) {
-      navigate('/carte', { state: { hasCity: false, articles } });
+      navigate('/carte', { state: { hasCity: false, articles, allArticles: articles } });
       return;
     }
 
@@ -152,12 +153,13 @@ const Home = () => {
           long: long,
           name: 'Dernier article',
           articles: nearestArticles,
+          allArticles: articles,
           lastArticleDist: lastDist,
         },
       });
     } else {
       // Fallback si le dernier article n'a pas de coordonnées
-      navigate('/carte', { state: { hasCity: false, articles } });
+      navigate('/carte', { state: { hasCity: false, articles, allArticles: articles } });
     }
   };
 
@@ -179,6 +181,7 @@ const Home = () => {
           long: lng,
           name: name,
           articles: (nearest && nearest.length > 0) ? nearest : articles,
+          allArticles: articles,
           lastArticleDist: (nearest && nearest.length > 0) ? lastDist : null,
         },
       });
@@ -194,7 +197,7 @@ const Home = () => {
     <div className={`home-page transition-all duration-300`}>
 
       {/* ── Titre ── */}
-      <div className="text-center text-xl">
+      <div className="text-center text-xl mb-2">
         <h1>
           Comment voulez-vous<br />
           démarrer votre{" "}
@@ -223,7 +226,7 @@ const Home = () => {
           aria-hidden="true"
           style={{
             position: 'absolute',
-            top: '-82px',
+            top: '-78px',
             left: '54%',
             transform: 'translateX(-53%) scaleY(1.3) scaleX(1.6)', // 30% plus haut
             transformOrigin: 'center center',
@@ -297,7 +300,7 @@ const Home = () => {
       onSubmit={handleCitySubmit}
       onSkip={() => {
         modalRef.current?.close();
-        navigate('/carte', { state: { hasCity: false, articles } });
+        navigate('/carte', { state: { hasCity: false, articles, allArticles: articles } });
       }}
       modalRef={modalRef}
     />
