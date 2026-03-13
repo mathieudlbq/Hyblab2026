@@ -1,0 +1,10 @@
+<svg id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 43.52 44.52"><defs><style>
+      .cls-1 {
+        fill: #1d1d1b;
+        filter: url(#drop-shadow-5);
+      }
+      .cls-2 {
+        fill: #f6e81d;
+        filter: url(#drop-shadow-4);
+      }
+    </style><filter id="drop-shadow-4" x="0" y="0" width="43.52" height="44.52" filterUnits="userSpaceOnUse"><feOffset dx="1" dy="2"></feOffset><feGaussianBlur result="blur" stdDeviation="0"></feGaussianBlur><feFlood flood-color="#717070" flood-opacity="1"></feFlood><feComposite in2="blur" operator="in"></feComposite><feComposite in="SourceGraphic"></feComposite></filter><filter id="drop-shadow-5" x="7.61" y=".83" width="27.12" height="41.28" filterUnits="userSpaceOnUse"><feOffset dx="0" dy="0"></feOffset><feGaussianBlur result="blur-2" stdDeviation="2"></feGaussianBlur><feFlood flood-color="#717070" flood-opacity=".2"></feFlood><feComposite in2="blur-2" operator="in"></feComposite><feComposite in="SourceGraphic"></feComposite></filter></defs><circle class="cls-2" cx="21.26" cy="21.26" r="21.26"></circle><path class="cls-1" d="M28.32,13.5c-2.46-9.67-12.89-7.96-14.28,1.45l-.02.11c-.83,4.84.74,10.25,2.56,14.86,1.12,2.99,4.33,9.03,7.47,4.58,1.28-1.73,2.3-4.87,3.09-7.75,1.12-4.22,2.19-9.25,1.19-13.24ZM21.26,20.98c-2.47,0-4.46-2.32-4.46-5.17s1.99-5.17,4.46-5.17,4.46,2.32,4.46,5.17-2,5.17-4.46,5.17Z"></path></svg>

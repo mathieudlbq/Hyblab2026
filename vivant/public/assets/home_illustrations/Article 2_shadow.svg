@@ -1,0 +1,10 @@
+<svg id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 43.52 44.52"><defs><style>
+      .cls-1 {
+        fill: #f6e81d;
+        filter: url(#drop-shadow-12);
+      }
+      .cls-2 {
+        fill: #1d1d1b;
+        filter: url(#drop-shadow-13);
+      }
+    </style><filter id="drop-shadow-12" x="0" y="0" width="43.52" height="44.52" filterUnits="userSpaceOnUse"><feOffset dx="1" dy="2"></feOffset><feGaussianBlur result="blur" stdDeviation="0"></feGaussianBlur><feFlood flood-color="#717070" flood-opacity="1"></feFlood><feComposite in2="blur" operator="in"></feComposite><feComposite in="SourceGraphic"></feComposite></filter><filter id="drop-shadow-13" x="4.05" y=".83" width="34.56" height="41.04" filterUnits="userSpaceOnUse"><feOffset dx="0" dy="0"></feOffset><feGaussianBlur result="blur-2" stdDeviation="2"></feGaussianBlur><feFlood flood-color="#717070" flood-opacity=".2"></feFlood><feComposite in2="blur-2" operator="in"></feComposite><feComposite in="SourceGraphic"></feComposite></filter></defs><circle class="cls-1" cx="21.26" cy="21.26" r="21.26"></circle><path class="cls-2" d="M25.11,7.07l-13.39,2.99c-1.14.26-1.87,1.4-1.61,2.54l4.77,21.38c.26,1.14,1.4,1.87,2.54,1.61l13.39-2.99c1.14-.26,1.87-1.4,1.61-2.54l-4.77-21.38c-.26-1.15-1.4-1.87-2.54-1.62ZM28.88,28.91l-11.3,2.52c-.43.1-.86-.18-.96-.61s.18-.86.61-.96l11.3-2.52c.43-.1.86.18.96.61s-.18.86-.61.96ZM27.67,23.49l-11.3,2.52c-.43.1-.86-.18-.96-.61s.18-.86.61-.96l11.3-2.52c.43-.1.86.18.96.61s-.18.86-.61.96ZM26.46,18.08l-11.3,2.52c-.43.1-.86-.18-.96-.61s.18-.86.61-.96l11.3-2.52c.43-.1.87.18.96.61s-.18.86-.61.96ZM25.25,12.66l-11.3,2.52c-.43.1-.86-.18-.96-.61s.18-.86.61-.96l11.3-2.52c.43-.1.86.18.96.61s-.18.86-.61.96Z"></path></svg>

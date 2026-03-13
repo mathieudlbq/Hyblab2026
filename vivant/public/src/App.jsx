@@ -6,6 +6,8 @@ import ImageCrawl from './test';
 import TestSvg from './ExtractSvg';
 import './App.css';
 
+import { Carte } from './pages/Carte';
+
 // Component wrapper for the old structure to be accessible via /test
 const OldTestComponents = () => (
   <div className="p-8">
@@ -26,8 +28,9 @@ function App() {
           {/* Route to whatever they were previously testing */}
           <Route path="test" element={<OldTestComponents />} />
 
-          
-          
+          {/* Route for the map */}
+          <Route path="carte" element={<Carte />} />
+
           {/* You can add more routes here, e.g. <Route path="about" element={<About />} /> */}
         </Route>
       </Routes>
