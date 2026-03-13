@@ -8,7 +8,7 @@ async function init(){
         credentials: "include"
     });
 
-    const filmsResponse = await fetch(API + "/film-week", {
+    const filmsResponse = await fetch(API + "/getAffiches", {
         method: "GET",
         credentials: "include"
     });
@@ -17,7 +17,13 @@ async function init(){
 
     console.log(films);
 
-    liste.innerHTML = films.map(f => `<li>${f.nom} (${f.date_sortie})</li>`).join('');
+    liste.innerHTML = films.map(f => `<li class="film-item">
+    <img src="${f.affiche}" alt="${f.title}">
+    <div class="film-info">
+      <h3>${f.title}</h3>
+      <span>${f.date}</span>
+    </div>
+  </li>`).join('');
 }
 
 init();

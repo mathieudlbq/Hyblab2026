@@ -6,6 +6,7 @@ const path = require('path');
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const linkedom = require("linkedom");
+const linkedom = require("linkedom");
 
 app.use(cookieParser());
 
@@ -30,7 +31,111 @@ app.get('/init', async function ( req, res ) {
     res.json({'Ok':true});
 } );
 
-// --------film-------------
+app.get('/poly', async function ( req, res ) {
+    if(!fs.existsSync("./actu/api/BDD/dataActu.json")){
+        fetch("https://api.actu.fr/posts?filter%5Bmarque%5D=87725", {
+            method: "GET",    
+            headers: {
+                "Content-Type": "application/json",
+                "user-agent": "Hyblab2026"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            fs.writeFileSync("./actu/api/BDD/dataActu.json", JSON.stringify(data, null, 2));
+
+            fs.readFile("./actu/api/BDD/dataActu.json", "utf8", function (err, fileData) {
+                if (err) {
+                    res.json({error:"Les données n'ont pas pu être récupérés !"});
+                    return;
+                }
+                res.json(JSON.parse(fileData));
+            });
+        });
+    }else{
+        fs.readFile("./actu/api/BDD/dataActu.json", "utf8", function (err, fileData) {
+                if (err) {
+                    res.json({error:"Les données n'ont pas pu être récupérés !"});
+                    return;
+                }
+                res.json(JSON.parse(fileData));
+        });
+    }  
+
+} );
+
+function lastWednesday() {
+  const today = new Date()
+  const day = today.getDay()
+
+  const diff = (day - 3 + 7) % 7
+
+  today.setDate(today.getDate() - diff)
+
+  return today
+}
+
+app.get('/getAffiches', async function ( req, res ) {
+    const lastDate = lastWednesday();
+    const day = String(lastDate.getDate()).padStart(2, "0");
+    const month = String(lastDate.getMonth()+1).padStart(2, "0");
+    const year = String(lastDate.getFullYear()); 
+
+    if(!fs.existsSync(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`)){
+        
+        const link = `https://cinema.actu.fr/semaine/${year}-${month}-${day}`;
+
+        const resp = await fetch(link);
+        const html = await resp.text();
+
+        const document  = new linkedom.DOMParser().parseFromString(html, "text/html");
+        const fiche = document?.body.querySelectorAll(".fiche-film");
+        const ficheObjs = [];
+        for(const f of fiche){
+            const title = f?.querySelector(".fiche-film--description>a>h2").textContent.trim();
+            const realisateur = f?.querySelector(".fiche-film--description>span.fiche-film--description--no-gap>a").textContent.trim();
+            const date = f?.querySelector(".fiche-film--description>span.fiche-film--date>a").textContent.trim();
+            const image = f?.querySelector(".media>img")?.getAttribute("src").replace("_thumb","");
+            console.log(title);
+            console.log(realisateur);
+            console.log(date);
+            console.log(image);
+            ficheObjs.push({title:title,real:realisateur,date:date,affiche:image});
+        }
+        fs.writeFileSync(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`, JSON.stringify(ficheObjs, null, 2));
+    }
+    fs.readFile(`./actu/api/BDD/Films/films-${year}-${month}-${day}.json`, "utf8", function (err, fileData) {
+        if (err) {
+            res.json({error:"Les données n'ont pas pu être récupérés !"});
+            return;
+        }
+        res.json(JSON.parse(fileData));
+    });
+} );
+
+// async function getCineActuHTML(){
+//     const res = await fetch("http://localhost:8080/actu/api/poly");
+//     const json = await res.json();
+
+//     const values = Object.values(json);
+//     const target = values[2];
+//     const result = Object.values(target);
+    
+
+//     return result.find(e=>e.id === 63923715)?.content;
+// }
+// async function getCineActuHTML(){
+//     const res = await fetch("https://actu.fr/cinema/sorties-films/planetes-scarlet-et-l-eternite-le-testament-d-ann-lee-nos-critiques-des-sorties-du-11-mars_63923715.html")
+//     const html = await res.text()
+
+//     const { document } = new linkedom.DOMParser().parseFromString(html, "text/html");
+
+
+//     // console.log(document.querySelector("h1").textContent);
+// }
+// getCineActuHTML();
+
+// ROUTES FILMS
 
 app.get('/film-week', async function ( req, res ) {
     const { last_date } = await GetLastDate();

@@ -11,10 +11,54 @@
 body{
     background-color: black;
     color: white;
-    overflow: hidden;   /* to avoid slider bugs on some browsers */
+    /* overflow: hidden;   to avoid slider bugs on some browsers */
     font-family: sans-serif;
 }
 
+#liste {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.film-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+  background: #1e1e1e;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.film-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
+.film-item img {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.film-info h3 {
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+}
+
+.film-info span {
+  font-size: 12px;
+  color: #aaa;
+}
 /* -------------- Loader --------------*/
 #loader{
     z-index: 2;
