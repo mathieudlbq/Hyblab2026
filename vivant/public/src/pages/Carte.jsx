@@ -10,11 +10,11 @@ export const Carte = () => {
   const initialState = location.state || {};
 
   // ── État local (mis à jour après saisie de ville) ──
-  const [lat, setLat]                     = useState(initialState.lat ?? null);
-  const [long, setLong]                   = useState(initialState.long ?? null);
-  const [cityName, setCityName]           = useState(initialState.name ?? '');
-  const [hasCity, setHasCity]             = useState(initialState.hasCity ?? false);
-  const [articles, setArticles]           = useState(initialState.articles ?? []);
+  const [lat, setLat] = useState(initialState.lat ?? null);
+  const [long, setLong] = useState(initialState.long ?? null);
+  const [cityName, setCityName] = useState(initialState.name ?? '');
+  const [hasCity, setHasCity] = useState(initialState.hasCity ?? false);
+  const [articles, setArticles] = useState(initialState.articles ?? []);
   const [lastArticleDist, setLastArticleDist] = useState(initialState.lastArticleDist ?? null);
 
   // ── État de la modale ──
@@ -37,20 +37,29 @@ export const Carte = () => {
 
     try {
       const centre = { latitude: lat, longitude: lng };
-      const allArticles = articles.length > 0 ? articles : (initialState.articles ?? []);
+
+      // Assurer qu'on garde la liste complète des articles récupérée à l'accueil
+      const allArticles = (initialState?.articles?.length > 0) ? initialState.articles : articles;
 
       // N articles les plus proches + distance au dernier
-      const nearest  = findNearestArticles(allArticles, centre, N_ARTICLES);
+      const nearest = findNearestArticles(allArticles, centre, N_ARTICLES);
       const lastDist = getLastArticleDistance(nearest, centre);
 
       setLat(lat);
       setLong(lng);
       setCityName(name);
       setHasCity(true);
-      setArticles(nearest);
-      setLastArticleDist(lastDist);
-      setIsLoading(false);
 
+      // Si on trouve rien dans le rayon, on affiche au moins la liste complète (ou vice-versa)
+      if (nearest && nearest.length > 0) {
+        setArticles(nearest);
+        setLastArticleDist(lastDist);
+      } else {
+        setArticles(allArticles);
+        setLastArticleDist(null);
+      }
+
+      setIsLoading(false);
       modalRef.current?.close();
     } catch (err) {
       console.error('Erreur calcul distance :', err);

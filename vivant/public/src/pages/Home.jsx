@@ -3,6 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { getCityByCoordinates } from '../../../utils/coordinate';
 import { findNearestArticles, getLastArticleDistance } from '../../../utils/dist';
 import './Home.css';
+import RoutePoinillee from './../assets/home_illustrations/Pointillés + Bonhomme.svg';
+import TraitJaune from './../assets/home_illustrations/Trait Jaune.svg';
+import Pin2Shadow from './../assets/home_illustrations/Pin 2_shadow.svg';
+import Pin2 from './../assets/home_illustrations/Pin 1.svg';
+import Local2Shadow from './../assets/home_illustrations/Local 2_shadow.svg';
+import Local2 from './../assets/home_illustrations/Local 1-2.svg';
+import Article2Shadow from './../assets/home_illustrations/Article 2_shadow.svg';
+import Article1 from './../assets/home_illustrations/Article 1.svg';
 
 const N_ARTICLES = 10;
 
@@ -12,7 +20,7 @@ const N_ARTICLES = 10;
 //  imgFlat   : chemin vers la version sans ombre (état pressé / "enfoncé")
 //  active    : booléen – true quand le bouton est pressé
 //
-const SwitchIcon = ({ imgShadow, imgFlat, active, size = 100 }) => (
+const SwitchIcon = ({ imgShadow, imgFlat, active, size = 70 }) => (
   <div className="switch-icon" style={{ width: size, height: size }}>
     {/* Version avec ombre – visible au repos */}
     <img
@@ -47,7 +55,7 @@ const Home = () => {
   useEffect(() => {
     fetch('http://localhost:8080/vivant/api/articles')
       .then(r => r.json())
-      .then(data => setArticles(data))
+      .then((data) => {setArticles(data)})
       .catch(err => console.error('Error fetching articles:', err));
   }, []);
 
@@ -103,43 +111,112 @@ const Home = () => {
     );
   };
 
+  const handleLastArticle = () => {
+    if (!articles || articles.length === 0) {
+      navigate('/carte', { state: { hasCity: false, articles } });
+      return;
+    }
+
+    let lat = null;
+    let long = null;
+    const firstArticle = articles[0];
+
+    // Récupérer les coordonnées du tout premier article (le plus récent)
+    if (firstArticle._latlngmarker) {
+      try {
+        const marker = JSON.parse(firstArticle._latlngmarker);
+        if (marker.latitude && marker.longitude) {
+          lat = parseFloat(marker.latitude);
+          long = parseFloat(marker.longitude);
+        }
+      } catch (e) {
+        console.error('Erreur parsing latlngmarker pour le dernier article');
+      }
+    }
+
+    if (lat !== null && long !== null) {
+      const centre = { latitude: lat, longitude: long };
+      const nearestArticles = findNearestArticles(articles, centre, N_ARTICLES);
+      const lastDist = getLastArticleDistance(nearestArticles, centre);
+
+      navigate('/carte', {
+        state: {
+          hasCity: true,
+          lat: lat,
+          long: long,
+          name: 'Dernier article',
+          articles: nearestArticles,
+          lastArticleDist: lastDist,
+        },
+      });
+    } else {
+      // Fallback si le dernier article n'a pas de coordonnées
+      navigate('/carte', { state: { hasCity: false, articles } });
+    }
+  };
+
   return (
     <div className="home-page">
 
       {/* ── Titre ── */}
-    <div className="text-center mb-10 text-xl">
-      <h1 className="text-center">
-        Comment voulez-vous<br />
-        démarrer votre{' '}
-        <span
-          className="inline-block bg-[url('/assets/home_illustrations/Trait Jaune.svg')] 
-                    bg-no-repeat bg-bottom pb-2"
-        >
-          exploration
-        </span>{' '}
-        ?
-      </h1>
-    </div>
+      <div className="text-center mb-5 text-xl">
+        <h1>
+          Comment voulez-vous<br />
+          démarrer votre{" "}
+          <span className="relative inline-block">
+            exploration
+            <img
+              src={TraitJaune}
+              alt=""
+              className="absolute left-0 top-[-7px] w-full"
+            />
+          </span>{" "}
+          ?
+        </h1>
+      </div>
 
       {/* ── Colonne de boutons ── */}
-      <div className="home-buttons-col">
+      <div
+        className="home-buttons-col"
+        style={{ position: 'relative', width: '100%' }}
+      >
+
+        {/* ── Route pointillée en arrière-plan ── */}
+        {/* <img
+          src={RoutePoinillee}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '-82px',
+            left: '54%',
+            transform: 'translateX(-53%) scaleY(1.3) scaleX(1.6)', // 30% plus haut
+            transformOrigin: 'center center',
+            width: '100%',
+            height: 'max(100%, 80vh)',
+            objectFit: 'fill',
+            zIndex: 0,
+            pointerEvents: 'none',
+          }}
+        /> */}
 
         {/* ── Bouton 1 : Près de chez vous ── */}
         <button
           className="home-btn"
           onClick={() => handlePress('geo', handleGeolocation)}
           disabled={isLoadingLocation}
+          style={{ position: 'relative', zIndex: 1 }}
         >
           {isLoadingLocation ? (
             <span className="loading loading-spinner" style={{ width: 100, height: 100 }} />
           ) : (
             <SwitchIcon
-              imgShadow="/assets/home_illustrations/Pin 2_shadow.svg"
-              imgFlat="/assets/home_illustrations/Pin 2_shadow.svg"
+              imgShadow={Pin2Shadow}
+              imgFlat={Pin2}
               active={activeBtn === 'geo'}
             />
           )}
-          <span className="home-btn__label">Près de chez vous</span>
+          <span className="text-sm">Près de chez vous</span>
         </button>
 
         {/* ── Bouton 2 : Par une ville ── */}
@@ -150,30 +227,28 @@ const Home = () => {
               navigate('/carte', { state: { hasCity: false, articles } })
             )
           }
+          style={{ position: 'relative', zIndex: 1 }}
         >
           <SwitchIcon
-            imgShadow="/assets/home_illustrations/Local 2_shadow.svg"
-            imgFlat="/assets/home_illustrations/Local 2_shadow.svg"
+            imgShadow={Local2Shadow}
+            imgFlat={Local2}
             active={activeBtn === 'ville'}
           />
-          <span className="home-btn__label">Par une ville de notre région</span>
+          <span className="text-sm">Par une ville de notre région</span>
         </button>
 
         {/* ── Bouton 3 : Dernier article ── */}
         <button
           className="home-btn"
-          onClick={() =>
-            handlePress('article', () =>
-              navigate('/carte', { state: { hasCity: false, articles } })
-            )
-          }
+          onClick={() => handlePress('article', handleLastArticle)}
+          style={{ position: 'relative', zIndex: 1 }}
         >
           <SwitchIcon
-            imgShadow="/assets/home_illustrations/Article 2_shadow.svg"
-            imgFlat="/assets/home_illustrations/Article 1.svg"
+            imgShadow={Article2Shadow}
+            imgFlat={Article1}
             active={activeBtn === 'article'}
           />
-          <span className="home-btn__label">
+          <span className="text-sm">
             Depuis la localisation de<br />notre dernier article
           </span>
         </button>

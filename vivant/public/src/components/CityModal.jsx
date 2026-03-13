@@ -31,16 +31,16 @@ const CityModal = ({
   modalRef,
 }) => {
   // ── Communes chargées depuis l'API ──
-  const [communes, setCommunes]             = useState([]);
+  const [communes, setCommunes] = useState([]);
   const [loadingCommunes, setLoadingCommunes] = useState(true);
 
   // ── Autocomplétion ──
-  const [inputValue, setInputValue]         = useState('');
-  const [suggestions, setSuggestions]       = useState([]);
-  const [selected, setSelected]             = useState(null); // { name, lat, lng, dept }
-  const [showDropdown, setShowDropdown]     = useState(false);
-  const inputRef                            = useRef(null);
-  const dropdownRef                         = useRef(null);
+  const [inputValue, setInputValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [selected, setSelected] = useState(null); // { name, lat, lng, dept }
+  const [showDropdown, setShowDropdown] = useState(false);
+  const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   // Ouvrir la modale quand isOpen passe à true
   useEffect(() => {
@@ -48,52 +48,69 @@ const CityModal = ({
   }, [isOpen]);
 
   // Charger toutes les communes des 4 départements au montage
-  useEffect(() => {
-    const url = `https://geo.api.gouv.fr/communes?codesDepartements=${DEPT_CODES.join(',')}&fields=nom,centre,codeDepartement&boost=population`;
-    fetch(url)
-      .then(r => r.json())
-      .then(data => {
-        // data = [{ nom, codeDepartement, centre: { coordinates: [lng, lat] } }]
-        const list = data
-          .filter(c => c.centre?.coordinates)
-          .map(c => ({
-            name: c.nom,
-            dept: DEPT_LABELS[c.codeDepartement] || c.codeDepartement,
-            lng:  c.centre.coordinates[0],
-            lat:  c.centre.coordinates[1],
-          }));
-        setCommunes(list);
-        setLoadingCommunes(false);
-      })
-      .catch(err => {
-        console.error('Erreur chargement communes :', err);
-        setLoadingCommunes(false);
-      });
-  }, []);
+useEffect(() => {
+  const normalize = (str) =>
+    str.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+  const fetchCommunes = async () => {
+    try {
+      setLoadingCommunes(true);
+
+      const responses = await Promise.all(
+        DEPT_CODES.map(code =>
+          fetch(
+            `https://geo.api.gouv.fr/departements/${code}/communes?fields=nom,centre,codeDepartement`
+          ).then(r => r.json())
+        )
+      );
+
+      const data = responses.flat();
+
+      const list = data
+        .filter(c => c.centre?.coordinates)
+        .map(c => ({
+          name: c.nom,
+          search: normalize(c.nom), // clé optimisée pour la recherche
+          dept: DEPT_LABELS[c.codeDepartement] || c.codeDepartement,
+          lng: c.centre.coordinates[0],
+          lat: c.centre.coordinates[1],
+        }));
+
+      setCommunes(list);
+    } catch (err) {
+      console.error("Erreur chargement communes :", err);
+    } finally {
+      setLoadingCommunes(false);
+    }
+  };
+
+  fetchCommunes();
+}, []);
 
   // Filtrer les suggestions sur la saisie (max 8)
-  const handleInput = useCallback((e) => {
-    const val = e.target.value;
-    setInputValue(val);
-    setSelected(null);
+const handleInput = useCallback((e) => {
+  const val = e.target.value;
+  setInputValue(val);
+  setSelected(null);
 
-    if (val.trim().length < 2) {
-      setSuggestions([]);
-      setShowDropdown(false);
-      return;
-    }
+  if (val.trim().length < 2) {
+    setSuggestions([]);
+    setShowDropdown(false);
+    return;
+  }
 
-    const q = val.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
-    const filtered = communes
-      .filter(c => {
-        const n = c.name.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
-        return n.startsWith(q);
-      })
-      .slice(0, 8);
+  const q = val
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
 
-    setSuggestions(filtered);
-    setShowDropdown(filtered.length > 0);
-  }, [communes]);
+  const filtered = communes
+    .filter(c => c.search.includes(q))
+    .slice(0, 8);
+
+  setSuggestions(filtered);
+  setShowDropdown(filtered.length > 0);
+}, [communes]);
 
   // Sélectionner une suggestion
   const handleSelect = (commune) => {
@@ -127,27 +144,22 @@ const CityModal = ({
   const hasError = cityError || (!selected && inputValue.length > 1);
 
   return (
-    <dialog ref={modalRef} className="modal">
-      <div className="modal-box overflow-visible">
-        <h3 className="font-bold text-lg">📍 Choisir une ville de départ</h3>
-        <p className="py-2 text-sm opacity-70">
-          Entrez une commune pour trouver les {nArticles} articles les plus proches.
-          <br />
-          <span className="opacity-60">Départements : Vienne · Deux-Sèvres · Charente-Maritime · Charente</span>
-        </p>
+    <dialog ref={modalRef} className={`modal ${isOpen ? 'modal-open' : ''} bg-white fixed inset-0 m-0 w-[100vw] h-[100vh] max-w-none max-h-none rounded-none p-0 overflow-y-auto`}>
 
-        {/* Champ avec autocomplétion */}
-        <div className="form-control w-full mt-2" ref={dropdownRef}>
-          <label className="label">
-            <span className="label-text">Commune :</span>
-          </label>
+        {/* Content */}
+        <div className="relative z-20 w-full max-w-md mx-auto px-6 pointer-events-auto shadow-none align-center justify-center">
 
-          <div className="relative">
+          <div className="text-center mb-10 text-sm">
+            D'où voulez-vous commencer votre exploration ?
+          </div>
+
+          {/* Search Input */}
+          <div className={`bg-[#f6e91e] rounded-full px-5 py-4 flex items-center shadow-md border-2 ${cityError ? 'border-red-500' : 'border-transparent'}`} align-center justify-center>
             <input
               ref={inputRef}
               type="text"
-              placeholder={loadingCommunes ? 'Chargement des communes…' : 'Ex: Poitiers, Niort, Saintes…'}
-              className={`input input-bordered w-full ${selected ? 'input-success' : cityError ? 'input-error' : ''}`}
+              placeholder={loadingCommunes ? 'Chargement...' : 'Sélectionnez une ville'}
+              className="bg-transparent text-center outline-none flex-grow text-sm w-full align-center justify-center"
               value={inputValue}
               onChange={handleInput}
               onKeyDown={handleKeyDown}
@@ -156,54 +168,45 @@ const CityModal = ({
               autoFocus
               autoComplete="off"
             />
-
-            {/* Dropdown des suggestions */}
-            {showDropdown && (
-              <ul className="absolute z-50 w-full bg-base-100 border border-base-300 rounded-box shadow-lg mt-1 max-h-56 overflow-y-auto">
-                {suggestions.map((c, i) => (
-                  <li
-                    key={`${c.name}-${i}`}
-                    className="px-4 py-2 cursor-pointer hover:bg-base-200 flex justify-between items-center"
-                    onMouseDown={() => handleSelect(c)}
-                  >
-                    <span className="font-medium">{c.name}</span>
-                    <span className="text-xs opacity-50">{c.dept}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
 
-          {/* Feedback */}
-          {selected && (
-            <label className="label">
-              <span className="label-text-alt text-success">
-                ✅ {selected.name} — {selected.dept}
-              </span>
-            </label>
-          )}
-          {cityError && (
-            <label className="label">
-              <span className="label-text-alt text-error">{cityError}</span>
-            </label>
-          )}
-        </div>
+          {cityError && <p className="text-red-500 text-sm mt-3 ml-4 font-semibold">{cityError}</p>}
 
-        <div className="modal-action">
-          <button
-            className="btn btn-primary"
-            onClick={handleSubmit}
-            disabled={isLoading || !selected}
-          >
-            {isLoading
-              ? <span className="loading loading-spinner loading-sm"></span>
-              : 'Valider'}
-          </button>
-          <button className="btn" onClick={onSkip}>
-            Continuer sans ville
-          </button>
+          {/* Suggestions List */}
+          <div className="mt-5 flex flex-col gap-3">
+            {showDropdown && suggestions.map((c, i) => (
+              <button
+                key={`${c.name}-${i}`}
+                onMouseDown={(e) => { e.preventDefault(); handleSelect(c); }}
+                className="w-full bg-white rounded-full py-3.5 px-6 text-left shadow-sm cursor-pointer text-black hover:bg-gray-50 transition-colors font-medium text-sm border border-gray-100 flex items-center justify-between"
+              >
+                <span>{c.name}</span>
+                <span className="text-sm opacity-50">{c.dept}</span>
+              </button>
+            ))}
+
+
+            {/* Indicator Removed */}
+          </div>
+
+          {/* Validation & Actions */}
+          {selected && !showDropdown && (
+            <div className="mt-8 flex flex-col gap-3">
+              <button
+                onClick={handleSubmit}
+                className="bg-black text-white font-semibold py-4 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex justify-center items-center text-sm w-full"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></span>
+                ) : (
+                  'Valider ma position'
+                )}
+              </button>
+            </div>
+          )}
         </div>
-      </div>
+      
     </dialog>
   );
 };
