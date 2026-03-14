@@ -23,10 +23,6 @@ fetch('data/movies.json')
         itemCard.className = 'item-card';
         itemCard.innerHTML = `
           <img class="item-image" src="${item.image}" alt="${item.title}">
-          <div class="item-info">
-            <div class="item-title">${item.title}</div>
-            <div class="item-desc">${item.genre || ''}<br>${item.director}</div>
-          </div>
         `;
         itemsGrid.appendChild(itemCard);
       });
