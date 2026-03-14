@@ -10,8 +10,7 @@ const createEmptyContent = async function(){
     let nSlide=0;
 
     const endSlide = document.querySelector("#last-slide");
-    console.log("aA");
-    console.log(endSlide);
+    
     const sliderWrapper = document.querySelector(".swiper-wrapper");
 
     let slide;
@@ -28,8 +27,6 @@ const createEmptyContent = async function(){
             let bulletContent = data.volet[i].bullet[j]
             let titleSlide = false;
             
-            console.log(i)
-            console.log(bulletContent)
 
             let titleBar = document.createElement("div")
             titleBar.classList.add("title-bar")
@@ -52,7 +49,7 @@ const createEmptyContent = async function(){
             for(let k=0; k<bulletContent.length; k++){
                 if(bulletContent[k].type == "title"){
                     let title = document.createElement("h1");
-                    title.innerHTML = bulletContent[k].content
+                    title.innerHTML = "<span id='titleHighlight'>"+bulletContent[k].content+"</span>"
                     title.id = "instagram-header"
                     instaBox.appendChild(title)
                     titleSlide = true;
@@ -99,7 +96,6 @@ const createEmptyContent = async function(){
             bottom_sheet.appendChild(content)
             content.id = "extended-content"
             content.className="content"
-            console.log(data.volet[i].extendedContent)
 
             const extendTitle = document.createElement("p")
             extendTitle.id = "extended-content-title"
@@ -141,9 +137,8 @@ const createEmptyContent = async function(){
     }
     let progressBadgeList = document.querySelectorAll(".progress-badge")
     for(let i=0; i<progressBadgeList.length; i++){
-        console.log(i)
+        
         badge = progressBadgeList[i]
         badge.innerHTML = badge.innerHTML + String(nSlide+3)
     }
-
 }

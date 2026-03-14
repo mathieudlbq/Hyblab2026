@@ -3,7 +3,7 @@
 // Just animate the logo
 const initSlide3 = function(){
 
-  console.log("slide fin")
+  
   // Get img element
   const img = document.querySelector('#img-fini');
 

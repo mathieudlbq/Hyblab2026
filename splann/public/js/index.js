@@ -27,7 +27,7 @@
       initSlide1();
     }
     else if (index == 1){
-      console.log("")
+      
     }
     else if (index == nbSlide-1){
       initSlide3();

@@ -13,7 +13,7 @@
       [{"type" : "title", "content" : "La mine d’Imerys contamine la réserve naturelle de Glomel"},
       {"type" : "paragraph", "content" : "Des ruisseaux protégés, une réserve naturelle… et à quelques kms, une mine à ciel ouvert qui déverse dans la nature des métaux lourds jusqu’à 60 fois supérieures aux valeurs guides."}
       ],
-      [{ "type" : "paragraph", "content" : "« La mine d’Imérys utilise la réserve naturelle  régionale [Magoar Penvern] \n comme station d’épuration » résument certains riverains de Glomel."},
+      [{ "type" : "paragraph", "content" : "« La mine d’Imérys utilise la réserve naturelle régionale comme <b>station d’épuration </b>» résument certains riverains de Glomel."},
       {"type" : "img", "content": "img/mainDraw.jpg"}
       ],
       [{ "type" : "paragraph", "content" : "La présence élevée d’arsenic et de cadmium, deux substances <b>cancérigènes, mutagènes et reprotoxiques </b>, n’a pourtant jamais été signalée aux habitants par Imerys. "},

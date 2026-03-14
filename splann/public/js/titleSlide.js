@@ -2,7 +2,7 @@
 
 // async init function (because of the awaits on fetches)
 const initSlide1 = async function(){
-  console.log("titre")
+  
   // Get some data
   let response = await fetch('data/contaminationMiniere.json');
   const data2 = await response.json();

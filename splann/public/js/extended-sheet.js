@@ -5,29 +5,26 @@ const addExtend = async function(swiper){
   const sheets = document.querySelectorAll('.bottom-sheet');
   const instagramBoxs=document.querySelectorAll('#instagram-box');
   let isOpen=false;
-  console.log(instagramBoxs);
   for(let i = 0; i < sheets.length; i++){
   let sheet = sheets[i];
   
   if (sheet.dataset.initialized) continue; 
   sheet.dataset.initialized = true;
   
-  const handlebars = sheet.querySelector('.handle-bar'); 
+  const handlebars = document.querySelectorAll('.handle-bar'); 
   const pagination = document.querySelector('.swiper-pagination');
   const contents = document.querySelectorAll('.content')
   const butts = document.querySelectorAll('.toggle-btn')
   const degrades = document.querySelectorAll("#degrade-extended")
-
   for(let i=0;i<sheets.length;i++){
     let sheet=sheets[i]
     let handlebar = handlebars[i]
     let content = contents[i]
     let butt = butts[i]
     let degrade = degrades[i]
-    if (sheet.dataset.initialized) return;
-      sheet.dataset.initialized = true; 
     let isOpen=false;
     let isDone=false;
+
 
     
     //pour le téléphone portable
@@ -36,7 +33,6 @@ const addExtend = async function(swiper){
     content.addEventListener('scroll', () => {
       // Check if scrolled to bottom
       if (content.scrollTop + content.clientHeight >= content.scrollHeight - 10) { // 10px tolerance
-        console.log('Reached bottom of content!');
         
         // Apply fade out and 180 degree rotation to the button image
         const buttonImg = butt.querySelector('img');
@@ -55,12 +51,12 @@ const addExtend = async function(swiper){
     })
     
     //pour le pc
-    sheet.addEventListener('mouseenter', () => {console.log("entrée");swiper.allowTouchMove = false;swiper.params.simulateTouch = true;swiper.mousewheel.disable();console.log(swiper.allowTouchMove)});
-    sheet.addEventListener('mouseleave', () => {console.log("sortie");swiper.allowTouchMove = true;swiper.params.simulateTouch = true;swiper.mousewheel.enable();console.log(swiper.allowTouchMove)});
+    sheet.addEventListener('mouseenter', () => {swiper.allowTouchMove = false;swiper.params.simulateTouch = true;swiper.mousewheel.disable();});
+    sheet.addEventListener('mouseleave', () => {swiper.allowTouchMove = true;swiper.params.simulateTouch = true;swiper.mousewheel.enable();});
     
     const handleTouchOutside = (e) => {
       if ((!e.target.closest('.bottom-sheet.open')) && (!e.target.closest('.handle-bar'))) {
-        console.log("etc'est ok")
+        
         isOpen = false;
         sheet.classList.remove('open');
         pagination.classList.remove('hidden');
@@ -73,8 +69,10 @@ const addExtend = async function(swiper){
 
     document.removeEventListener('touchstart', handleTouchOutside);
     document.addEventListener('touchstart', handleTouchOutside);
-    
+    console.log(handlebars)
+    console.log(handlebar)
     handlebar.addEventListener('click', () => {
+      
       isOpen=!isOpen;
       sheet.classList.toggle('open',isOpen);
       pagination.classList.toggle('hidden',isOpen);
@@ -84,7 +82,8 @@ const addExtend = async function(swiper){
       isOpen=false;
       sheet.classList.remove('open');
       pagination.classList.remove('hidden');
-    });}
+    });
+  }
     
 };
 }
