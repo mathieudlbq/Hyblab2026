@@ -185,7 +185,6 @@ app.get('/film-ranking', async (req, res) => {
 
     const date = await GetLastDate();
     const films = await GetClassement(date);
-
     if (films){
         res.json(films);
     }
@@ -879,12 +878,16 @@ async function GetClassement(date){
     const db = await getDB();
     
     const query = `
-        SELECT F.nom, COUNT(FA.id_utilisateur) as nb_likes
+        SELECT 
+            F.nom,
+            COUNT(FA.id_utilisateur) AS nb_likes,
+            COUNT(FAP.id_utilisateur) AS nb_dislikes
         FROM film F
-        JOIN FilmAime FA ON F.id = FA.id_film
+        LEFT JOIN FilmAime FA ON F.id = FA.id_film
+        LEFT JOIN FilmAimePas FAP ON F.id = FAP.id_film
         WHERE F.date_sortie = ?
         GROUP BY F.id
-        ORDER BY nb_likes DESC
+        ORDER BY nb_likes DESC;
     `;
 
     const result = await db.all(query, [date]);
