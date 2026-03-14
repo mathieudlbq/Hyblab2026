@@ -873,7 +873,7 @@ async function ajoutUtilisateur(token){
     const db = await getDB();
 
     const insert = await db.run(`
-        INSERT INTO Utilisateur (token) VALUES (?)
+        INSERT OR IGNORE INTO Utilisateur (token) VALUES (?)
     `,[token]);
 
     return insert.lastID;
@@ -883,7 +883,7 @@ async function ajoutFilmAime(id_film, id_utilisateur){
     const db = await getDB();
 
     const insert = await db.run(`
-        INSERT INTO FilmAime (id_film, id_utilisateur) VALUES (?,?)
+        INSERT OR IGNORE INTO FilmAime (id_film, id_utilisateur) VALUES (?,?)
     `,[id_film, id_utilisateur]);
 
     return insert.lastID;
@@ -893,7 +893,7 @@ async function ajoutFilm(nom, affiche, bande_annonce, critique, nb_etoile, descr
     const db = await getDB();
     
     const insert = await db.run(`
-        INSERT INTO Film (nom, affiche, bande_annonce, critique, nb_etoile, description, realisateur, date_sortie) VALUES (?,?,?,?,?,?,?,?)
+        INSERT OR IGNORE INTO Film (nom, affiche, bande_annonce, critique, nb_etoile, description, realisateur, date_sortie) VALUES (?,?,?,?,?,?,?,?)
     `,[nom, affiche, bande_annonce, critique, nb_etoile, description, realisateur, date_sortie]);
 
     return insert.lastID;
@@ -904,7 +904,7 @@ async function ajoutActeur(nom, prenom){
     const db = await getDB();
 
     const insert = await db.run(`
-        INSERT INTO Acteur (nom, prenom) VALUES (?,?)
+        INSERT OR IGNORE INTO Acteur (nom, prenom) VALUES (?,?)
     `,[nom,prenom]);
 
     return insert.lastID;
@@ -915,7 +915,7 @@ async function ajoutFilmActeur(id_film, id_acteur){
     const db = await getDB();
 
     const insert = await db.run(`
-        INSERT INTO FilmActeur (id_film, id_acteur) VALUES (?,?)
+        INSERT OR IGNORE INTO FilmActeur (id_film, id_acteur) VALUES (?,?)
     `,[id_film,id_acteur]);
 
     return insert.lastID;
@@ -926,7 +926,7 @@ async function ajoutFilmCoupDeCoeur(id_film, date){
     const db = await getDB();
 
     const insert = await db.run(`
-        INSERT INTO Film (id_film, date) VALUES (?,?)
+        INSERT OR IGNORE INTO Film (id_film, date) VALUES (?,?)
     `,[id_film,date]);
 
     return insert.lastID;
