@@ -87,5 +87,4 @@ const addExtend = async function(swiper){
     });}
     
 };
-
-//création des slides (createemptycontent) dans initContentSlide.js->remplissage JSON -> ajouter les events listeners pour que ça bouge (code ici)
+}
