@@ -5,7 +5,7 @@
   ];
 
   const PARTICLE_COUNT = 120;
-  const GRAVITY = 0.38;
+  const GRAVITY = 0.28;
   const DRAG = 0.97;
   const SPIN = 0.08;
 
@@ -55,7 +55,7 @@
       isRibbon,
       alpha: 1,
       life: 1,
-      decay: randomBetween(0.012, 0.022),
+      decay: randomBetween(0.005, 0.012),
     };
   }
 
