@@ -5,11 +5,14 @@ const addExtend = async function(swiper){
   const sheets = document.querySelectorAll('.bottom-sheet');
   const handlebars = document.querySelectorAll('.handle-bar');
   const pagination = document.querySelector('.swiper-pagination');
-
+  const contents = document.querySelectorAll('.content')
+  const butts = document.querySelectorAll('.toggle-btn')
 
   for(let i=0;i<sheets.length;i++){
     let sheet=sheets[i]
     let handlebar = handlebars[i]
+    let content = contents[i]
+    let butt = butts[i]
     if (sheet.dataset.initialized) return;
       sheet.dataset.initialized = true; 
     let isOpen=false;
@@ -18,6 +21,7 @@ const addExtend = async function(swiper){
     //pour le téléphone portable
     sheet.addEventListener('scroll', () => {swiper.allowTouchMove = false;});
     sheet.addEventListener('scroll', () => {swiper.allowTouchMove = true;});
+    content.addEventListener('scrollend', () => {butt.innerHTML = "<img src='img/check_vert.png'>"})
     //pour le pc
     sheet.addEventListener('mouseenter', () => {console.log("entrée");swiper.allowTouchMove = false;swiper.params.simulateTouch = true;swiper.mousewheel.disable();console.log(swiper.allowTouchMove)});
     sheet.addEventListener('mouseleave', () => {console.log("sortie");swiper.allowTouchMove = true;swiper.params.simulateTouch = true;swiper.mousewheel.enable();console.log(swiper.allowTouchMove)});

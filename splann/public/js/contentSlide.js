@@ -70,7 +70,7 @@ const createEmptyContent = async function(){
 
             const button = document.createElement("button")
             button.classList.add("toggle-btn")
-            button.textContent = "▲"
+            button.innerHTML = '<img src="img/fleche_rouge.png">'
             handle_bar.appendChild(button)
 
             handle_bar.appendChild(document.createElement('br'))
