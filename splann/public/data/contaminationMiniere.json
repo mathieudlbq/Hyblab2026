@@ -72,16 +72,13 @@
     ],
     "extendedContent": [
       { "type" : "text",
-        "content" : "Le soutien à Imerys, qui veut creuser une nouvelle fosse, est un enjeu fort des élections municipales et une source de tensions au sein de la population."
+        "content" : "L'entreprise se sert des salariés et de <b>la menace du chômage</b> comme d'un bouclier. Tous <b>les salariés sont inquiets</b>. Si la demande d'extension est refusée, l'exploitation s'arrêtera en 2037."
       },
       { "type" : "text",
-        "content" : "L'entreprise se sert des salariés et de la menace du chômage comme d'un bouclier. Tous les salariés sont inquiets. Si la demande d'extension est refusée, l'exploitation s'arrêtera en 2037."
+        "content" : " <b>« Le climat général est détérioré</b> et la cohésion des habitants se fissure à Glomel. » Les opposants dénoncent une « technique de la camisole de force » et craignent des représailles : « On hésite à communiquer car on se demande dans quelle mesure on ne va pas servir d’exemple, pour que les autres se taisent. »"
       },
       { "type" : "text",
-        "content" : " « Le climat général est détérioré et la cohésion des habitants se fissure à Glomel. » Les opposants dénoncent une « technique de la camisole de force » et craignent des représailles : « On hésite à communiquer car on se demande dans quelle mesure on ne va pas servir d’exemple, pour que les autres se taisent. »"
-      },
-      { "type" : "text",
-        "content" : " L'issue finale du projet : « Le préfet donne son accord le 20 juin 2024 pour l’extension de la carrière Imerys. » Cette décision marque « la fin du dialogue et de la pantomime débonnaire à laquelle s’est prêtée la multinationale avec les riverains. »"
+        "content" : " L'issue finale du projet : « Le préfet donne son accord le 20 juin 2024 pour <b>l’extension de la carrière Imerys.</b> » Cette décision marque « la fin du dialogue et de la pantomime débonnaire à laquelle s’est prêtée la multinationale avec les riverains. »"
       }
     ]
     }],

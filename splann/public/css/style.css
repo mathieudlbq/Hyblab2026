@@ -508,7 +508,7 @@ body{
 .bottom-sheet .content {
     text-align: justify;
     color:white;
-    font-size: 45%;
+    font-size: 30%;
     height: calc(100% - 80px); /* 100% du sheet moins la handle-bar */
     overflow-y:auto;
     padding: 16px;
@@ -550,7 +550,7 @@ body{
     margin-top: 5%;
     font-weight: bold;
     margin-bottom: 10%;
-    font-size:100%;
+    font-size:110%;
 }
 
 .toggle-btn {
