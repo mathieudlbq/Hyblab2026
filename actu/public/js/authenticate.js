@@ -1,5 +1,5 @@
-const API = "https://hyblab.polytech.univ-nantes.fr/actu/api" 
-//const API = "http://localhost:8080/actu/api"
+// const API = "https://hyblab.polytech.univ-nantes.fr/actu/api" 
+const API = "http://localhost:8080/actu/api"
 
 function init(){
     fetch(API + "/create-user", {

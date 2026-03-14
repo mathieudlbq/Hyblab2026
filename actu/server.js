@@ -4,14 +4,20 @@
 // Load usefull expressjs and nodejs objects / modules
 const express = require('express');
 const path = require('path');
+const cors = require("cors");
 
 // Create our application
 const app = express();
 app.use(express.json());
 
+app.use(cors({
+  origin: "http://localhost:8080"
+}));
+
 // Load and register our REST API
 const api = require('./api/api');
 app.use('/api', api);
+
 
 // Minimum routing: serve static content from the html directory
 app.use(express.static(path.join(__dirname, 'public')));
