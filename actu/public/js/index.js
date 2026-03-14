@@ -5,8 +5,8 @@ window.scrollTo(0, 0);
 
 const affiches = document.querySelector(".affiches");
 
-const zone_pour = document.querySelector(".zoon_pour");
-const zone_contre = document.querySelector(".zoon_contre");
+const zone_pour = document.querySelector(".zone_pour");
+const zone_contre = document.querySelector(".zone_contre");
 
 const film_cards = [];
 // generate affiche

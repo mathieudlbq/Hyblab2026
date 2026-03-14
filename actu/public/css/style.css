@@ -163,7 +163,7 @@ body{
 /* /////////// */
 
 
-.zoon_contre{
+.zone_contre{
     --transparance_contre : 70%;
     background: linear-gradient(90deg, red 69%, transparent var(--transparance_contre));
     border-radius: 300px;
@@ -179,7 +179,7 @@ body{
 }
 
 
-.zoon_pour{
+.zone_pour{
     --transparance_pour : 30%;
     background: linear-gradient(90deg, transparent var(--transparance_pour), green 31%);
     border-radius: 300px;
