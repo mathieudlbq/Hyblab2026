@@ -118,7 +118,7 @@ const Home = () => {
     );
   };
 
-  const handleLastArticle = () => {
+  const handleLastArticle = async () => {
     if (!articles || articles.length === 0) {
       navigate('/carte', { state: { hasCity: false, articles, allArticles: articles } });
       return;
@@ -141,6 +141,8 @@ const Home = () => {
       }
     }
 
+    const cityName = await getCityByCoordinates(lat, long);
+
     if (lat !== null && long !== null) {
       const centre = { latitude: lat, longitude: long };
       const nearestArticles = findNearestArticles(articles, centre, NB_ARTICLES);
@@ -151,7 +153,7 @@ const Home = () => {
           hasCity: true,
           lat: lat,
           long: long,
-          name: 'Dernier article',
+          name: cityName || 'Dernier article',
           articles: nearestArticles,
           allArticles: articles,
           lastArticleDist: lastDist,
@@ -176,7 +178,7 @@ const Home = () => {
 
       navigate('/carte', {
         state: {
-          hasCity: true,
+          hasCity: true,  
           lat: lat,
           long: lng,
           name: name,
@@ -220,23 +222,24 @@ const Home = () => {
       >
 
         {/* ── Route pointillée en arrière-plan ── */}
-         {<img
+        <img
           src={RoutePoinillee}
           alt=""
           aria-hidden="true"
           style={{
             position: 'absolute',
-            top: '-78px',
-            left: '54%',
-            transform: 'translateX(-53%) scaleY(1.3) scaleX(1.6)', // 30% plus haut
-            transformOrigin: 'center center',
-            width: '100%',
-            height: 'max(100%, 80vh)',
-            objectFit: 'fill',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%) scaleY(1.18)',
+            width: '120%',
+            height: '150%',
+            minWidth: '320px',
+            minHeight: '380px',
+            objectFit: 'contain',
             zIndex: 0,
             pointerEvents: 'none',
           }}
-        /> }
+        />
 
         {/* ── Bouton 1 : Près de chez vous ── */}
         <button

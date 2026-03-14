@@ -120,11 +120,4 @@
   pointer-events: none;
   transition: opacity 0.4s ease;
 }
-
-.switch-icon__img--shadow {
-  /* opacité gérée via la prop active → style inline uniquement pour opacity */
-}
-
-.switch-icon__img--flat {
-  /* opacité gérée via la prop active → style inline uniquement pour opacity */
-}
+/* Les styles des switch-icons sont gérés dynamiquement dans le composant SwitchIcon */

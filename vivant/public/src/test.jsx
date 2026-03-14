@@ -1,4 +1,4 @@
-import { motion, useSpring, useMotionValue, useScroll } from "framer-motion";
+import { motion, useSpring, useMotionValue, useScroll, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useMemo } from "react";
 import { useLocation } from 'react-router-dom';
 import { findNearestArticles } from '../../utils/dist';
@@ -165,6 +165,9 @@ const InfinitePath = () => {
   // --- NOUVEAUX STATES POUR L'ARTICLE ACTIF (MOBILE) ---
   const [activeArticleId, setActiveArticleId] = useState(null);
   const activeArticleIdRef = useRef(null); 
+  
+  // --- INDICATION DE SCROLL ---
+  const [showScrollHint, setShowScrollHint] = useState(true);
  
   const SPEED_DESKTOP = 5000;
   const SPEED_MOBILE  = 2500;
@@ -307,6 +310,12 @@ const InfinitePath = () => {
  
       setCyclistX(`${(point.x / data.width) * 100}%`);
 
+      if (latest > 0.005) {
+        setShowScrollHint(false);
+      } else {
+        setShowScrollHint(true);
+      }
+
       // --- NOUVEAU : DÉTECTION DE PROXIMITÉ ---
       const ZONE_DETECTION = 0.03; // Zone de sensibilité autour de l'article (tu peux ajuster)
       let foundId = null;
@@ -448,12 +457,12 @@ const InfinitePath = () => {
                         left: `${articlePositions['start_city'].xPercent}%`,
                         top: `${articlePositions['start_city'].yPercent}%`,
                       // On pousse vers le bas (50%) pour que ça apparaisse en-dessous du bout du chemin
-                        transform: "translate(-50%, 50%) rotateX(-50deg) translateZ(10px)",
-                        transformOrigin: "top center",
-                        transformStyle: "preserve-3d"
-                      }}
-                    >
-                      <div className="font-extrabold text-[18px] whitespace-nowrap flex items-center gap-2 drop-shadow-lg mt-5">
+                      transform: "translate(-50%, 50%) rotateX(-50deg) translateZ(10px)",
+                      transformOrigin: "top center",
+                      transformStyle: "preserve-3d"
+                    }}
+                  >
+                    <div className="font-extrabold text-[18px] whitespace-nowrap flex items-center gap-2 drop-shadow-lg mt-5">
                       <svg className="w-6 h-6 text-[#FF3B83]" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
@@ -566,10 +575,10 @@ const InfinitePath = () => {
               className="w-full h-full object-contain relative z-10"
               alt="vélo"
             />
-            </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
+    </div>
     </>
   );
 };
