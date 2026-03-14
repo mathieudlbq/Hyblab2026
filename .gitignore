@@ -140,4 +140,6 @@ vite.config.ts.timestamp-*
 .DS_Store
 package-lock.json
 
-vivant/database.sqlite
+vivant/database.sqlite 
+vivant/database.sqlite-wal
+vivant/database.sqlite-shm
