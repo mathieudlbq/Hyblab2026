@@ -200,18 +200,7 @@ setTimeout(() => {
 // };
 
 
-
-
-
-
-
 //
-
-
-
-
-// film_cards[(film_cards.length + (-nb_tours) % film_cards.length) % film_cards.length].setAttribute("style", "border:3px solid red;")
-
 
 
 function observer() {
@@ -242,10 +231,6 @@ function observer() {
             return Math.sin(angle) * distance + window.innerHeight / 2
           },
 
-          // z: (i) => {
-          //   const angle = getAngle(i)
-          //   return Math.cos(angle) * distance 
-          // },
 
         })
 
