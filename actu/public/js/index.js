@@ -11,7 +11,7 @@ const zone_contre = document.querySelector(".zoon_contre");
 const film_cards = [];
 // generate affiche
 
-const nb_card = 3;
+const nb_card = 13;
 let nb_tours = Math.round(Math.random() * 30 + 10);
 const distance = 200;
 
