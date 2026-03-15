@@ -88,7 +88,7 @@ const InfinitePath = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const SPEED_DESKTOP = 5000;
-  const SPEED_MOBILE  = 2500;
+  const SPEED_MOBILE  = 5000;
  
   const dynamicHeight = useMemo(() => {
     const speed = isMobile ? SPEED_MOBILE : SPEED_DESKTOP;
@@ -106,7 +106,6 @@ const InfinitePath = () => {
   const [allArticles, setAllArticles] = useState(initialState.allArticles ?? []);
   const cityName = initialState.name || "Point de départ";
 
-  // ── Filtre Catégories (Mobile) ──
   const availableCategories = [
     "Initiative personnelle/quotidienne",
     "Entrepreneuriat",
@@ -399,31 +398,33 @@ const InfinitePath = () => {
   return (
     <>
     {/* ── Flottant Filtres (Mobile) ── */}
-    <div className="md:hidden fixed top-[88px] left-6 z-[900]">
+    <div className="md:hidden fixed top-[88px] left-6 z-[9999]">
       <button 
         onClick={() => setIsFilterOpen(!isFilterOpen)}
         className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg pointer-events-auto border border-gray-100 transition-transform active:scale-95"
       >
         {/* Trois petits points alignés */}
         <div className="flex gap-1">
-          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="w-1.5 h-1.5 bg-black rounded-full"></div>
+            ))}
         </div>
       </button>
 
       {isFilterOpen && (
         <div className="absolute top-14 left-0 bg-[#f7f7f7] rounded-[24px] p-5 shadow-2xl flex flex-col gap-4 w-64 pointer-events-auto origin-top-left border border-gray-100">
-          {availableCategories.map(cat => {
+          {Object.entries(CategoryList).map(([cat, color]) => {
             const isChecked = selectedCats.includes(cat);
             return (
-              <label key={cat} className="flex items-center gap-4 cursor-pointer" onClick={(e) => {
-                e.preventDefault();
-                toggleCategory(cat);
-              }}>
-                <div 
-                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors shadow-sm ${isChecked ? 'bg-[#F6E91E]' : 'bg-white'}`}
-                >
+              <label 
+                key={cat} 
+                className="flex items-center gap-4 cursor-pointer" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleCategory(cat);
+                }}
+              >
+                <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors shadow-sm" style={{ backgroundColor: isChecked ? color : 'white' }} >
                   {isChecked && (
                     <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -431,7 +432,7 @@ const InfinitePath = () => {
                   )}
                 </div>
                 <span className="text-[15px] font-medium text-black leading-tight select-none">
-                  {cat.replace('publique', 'public')} {/* Correction sémantique légère à l'affichage si besoin */}
+                  {cat.replace('publique', 'public')}
                 </span>
               </label>
             );
@@ -441,10 +442,10 @@ const InfinitePath = () => {
     </div>
 
     <div 
-        ref={containerRef} 
+      ref={containerRef} 
       className={`relative transition-all duration-700 no-scrollbar`} 
-        style={{ height: dynamicHeight }}
-      >
+      style={{ height: dynamicHeight }}
+    >
       <div className="sticky top-0 mask-y-from-75% mask-y-to-90% h-screen overflow-hidden flex justify-center [perspective:1200px]" >
           <div
             className="xl:w-[50vw] relative w-[100vw] flex-none"
@@ -452,7 +453,7 @@ const InfinitePath = () => {
           >
             <motion.div
               className="flex flex-col-reverse w-full will-change-transform"
-              style={{ y: pathY, transformStyle: "preserve-3d"}}
+              style={{ y: pathY, transformStyle: "preserve-3d" }}
             >
               {pathList.map((pathObj, i) => (
               <div
@@ -466,7 +467,6 @@ const InfinitePath = () => {
                   alt={`Path ${i}`}
                 />
 
-                {/* ── Marqueur de la ville de départ ── */}
                 {/* ── Marqueur de la ville de départ ── */}
                   {i === 0 && articlePositions['start_city'] && (
                     <div
@@ -525,7 +525,7 @@ const InfinitePath = () => {
                     return (
                       <div
                         key={obj.id}
-                        className={`absolute z-40 cursor-pointer flex flex-col items-center`}
+                        className={`absolute z-40 flex flex-col items-center`}
                         style={{
                           left:            `${safeLeft}%`,
                           top:             `${pos.yPercent}%`,
@@ -617,7 +617,7 @@ const InfinitePath = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.4 }}
-      className="absolute z-[900] flex flex-col items-center gap-3 pointer-events-none"
+      className="absolute z-[9999] flex flex-col items-center gap-3 pointer-events-none"
       style={{
         left: "20px",
         bottom: "14vh"
