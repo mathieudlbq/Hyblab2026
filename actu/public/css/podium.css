@@ -29,7 +29,7 @@ html, body {
 /* ==================== card name ==================== */
 
 .title{
-  width: 80%;
+  /* width: 80%; */
   color: var(--titleColor);
   text-shadow: var(--title-shadow);
   font-family: Inter;
@@ -602,13 +602,35 @@ html, body {
 }
 
 .goto-favoris{
-  width: 100%;
   padding: 2%;
   position: relative;
   display: flex;
-  justify-content: right;
+  align-items: center;
+  text-decoration : none;
+  justify-content: end;
 }
+
+.goto-favoris > span{
+  color : var(--color2);
+  font-family: "Inter",sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+}
+
 .heartToFavoris{
-  width: 10%;
-  padding-right: 13%;
+  width: 45px;
+}
+
+.card-scene footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+
+  z-index: -1;
+}
+.card-scene footer > *{
+  width: 100%;
+  padding: 10px;
 }
