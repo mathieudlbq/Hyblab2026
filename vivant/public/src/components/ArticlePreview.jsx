@@ -1,6 +1,7 @@
 import React from 'react';
 
 const ArticlePreview = ({ articleData }) => {
+  console.log(articleData);
   // Extraction de la meta description, ou contenu par défaut.
   const metadesc = articleData.fullArticle?._yoast_wpseo_metadesc || "";
 
@@ -43,7 +44,8 @@ const ArticlePreview = ({ articleData }) => {
         >
           Lire la suite de l'article
         </button>
-        <button 
+        {/* Bouton pour choisir l'article comme point de départ */}
+        {/* <button 
           className="xl:w-auto xl:h-auto xl:p-2 p-1 rounded-full bg-[#F6E91E] flex items-center justify-center hover:bg-[#E5D813] cursor-pointer shrink-0 shadow-sm"
           title="Aller sur la carte"
           onClick={(e) => {
@@ -51,10 +53,14 @@ const ArticlePreview = ({ articleData }) => {
             // Ajouter d'autres comportements ici si nécessaire.
           }}
         >
+
           <svg className="xl:w-7 xl:h-7 w-[4vw] h-[4vw] text-black drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
           </svg>
-        </button>
+        </button> */}
+
+        <span className="text-[1.4vh] font-semibold">
+          📍 À {articleData.fullArticle._distanceFromCentre < 1 ? Math.round(articleData.fullArticle._distanceFromCentre * 1000) + "m" : Math.round(articleData.fullArticle._distanceFromCentre) + "km"}</span>
       </div>
     </div>
   );
