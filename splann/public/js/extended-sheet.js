@@ -4,7 +4,7 @@
 const addExtend = async function(swiper){
   const sheets = document.querySelectorAll('.bottom-sheet');
   const handlebars = document.querySelectorAll('.handle-bar');
-  const pagination = document.querySelector('.swiper-pagination');
+  const pagination = document.querySelector('.nav-bar-hierarchical');
 
 
   for(let i=0;i<sheets.length;i++){

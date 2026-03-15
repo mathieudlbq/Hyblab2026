@@ -638,3 +638,43 @@ body{
     object-fit: contain;
 }
 
+.nav-bar-hierarchical {
+    position: absolute;
+    bottom: 85px; /* Positionnée au-dessus de la zone de scroll du bas */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 5000; /* Priorité maximale pour passer devant le bleu */
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.volet {
+    height: 18px;
+    min-width: 45px;
+    border: 2px solid #FF5262;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.volet.parcouru { background-color: #FFC9CE; border-color: #FFC9CE; }
+.volet.active { border: none; min-width: auto; gap: 6px; }
+
+.inner-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; }
+.inner-dot.active { background-color: #FF5262; }
+
+/* Le triangle pour la fin de volet */
+.inner-dot.is-last {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    width: 12px; height: 12px;
+    transform: rotate(180deg);
+    background-color: #FFC9CE;
+}
+.inner-dot.is-last.active { background-color: #FF5262; }
