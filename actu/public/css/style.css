@@ -277,3 +277,16 @@ span.compteur{
 
     transform: translate(-50%,-50%);
 }
+
+h1.text_fin{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    font-family: "Black_italic";
+    font-size: 30px;
+    transform: translate(0,-50%);
+    text-align: center;
+    padding: 30px;
+
+}

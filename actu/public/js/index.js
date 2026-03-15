@@ -394,14 +394,16 @@ function observer() {
 
         const compteur = create_view_compter(film_cards.length,total);
         const green = getComputedStyle(document.documentElement).getPropertyValue("--green")
-
-        gsap.timeline().set(compteur,{
+          
+        gsap.timeline({ease: "power4.out"}).set(compteur,{
           color : green,
         }).from(compteur,{
           duration : 1,
           x : decalageX,
           rotate: 100,
-          ease: "power4.out",
+        }).to(compteur,{
+          duration:0.2,
+          opacity:0,
           onComplete: ()=>compteur.remove()
         })
 
@@ -427,14 +429,15 @@ function observer() {
 
         const compteur = create_view_compter(film_cards.length,total)
         const red = getComputedStyle(document.documentElement).getPropertyValue("--red")
-        gsap.timeline().set(compteur,{
+        gsap.timeline({ease: "power4.out"}).set(compteur,{
           color : red,
         }).from(compteur,{
           duration : 1,
           x : decalageX,
           rotate: 100,
-          ease: "power4.out",
-
+        }).to(compteur,{
+          duration:0.2,
+          opacity:0,
           onComplete: ()=>compteur.remove()
         })
 
@@ -478,7 +481,15 @@ function observer() {
 
 function updateroue() {
   if (film_cards.length === 0) {
-    window.location.href = "podium.html";
+    const text = text_fin()
+    gsap.from(text,{
+      duration: 5,
+      opacity : 0,
+      y : "-=200",
+      onComplete: () => window.location.href = "podium.html"
+    })
+
+    
     return;
   }
 
@@ -514,3 +525,13 @@ function create_view_compter(cpt,total){
   document.querySelector("body").appendChild(compteur);
   return compteur
 }
+
+function text_fin(){
+  const text_fin = document.createElement("h1")
+  text_fin.innerText = "Il n'y a plus de film.\nRevenez la semaine prochaine pour découvrir de nouveaux films"
+  text_fin.classList.add("text_fin")
+
+  document.querySelector("body").appendChild(text_fin);
+  return text_fin
+}
+
