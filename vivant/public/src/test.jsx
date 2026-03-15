@@ -84,7 +84,6 @@ const InfinitePath = () => {
   const [allArticles, setAllArticles] = useState(initialState.allArticles ?? []);
   const cityName = initialState.name || "Point de départ";
 
-  // ── Filtre Catégories (Mobile) ──
   const availableCategories = [
     "Initiative personnelle/quotidienne",
     "Entrepreneuriat",
@@ -392,24 +391,26 @@ const InfinitePath = () => {
       >
         {/* Trois petits points alignés */}
         <div className="flex gap-1">
-          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-          <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="w-1.5 h-1.5 bg-black rounded-full"></div>
+            ))}
         </div>
       </button>
 
       {isFilterOpen && (
         <div className="absolute top-14 left-0 bg-[#f7f7f7] rounded-[24px] p-5 shadow-2xl flex flex-col gap-4 w-64 pointer-events-auto origin-top-left border border-gray-100">
-          {availableCategories.map(cat => {
+          {Object.entries(CategoryList).map(([cat, color]) => {
             const isChecked = selectedCats.includes(cat);
             return (
-              <label key={cat} className="flex items-center gap-4 cursor-pointer" onClick={(e) => {
-                e.preventDefault();
-                toggleCategory(cat);
-              }}>
-                <div 
-                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors shadow-sm ${isChecked ? 'bg-[#F6E91E]' : 'bg-white'}`}
-                >
+              <label 
+                key={cat} 
+                className="flex items-center gap-4 cursor-pointer" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleCategory(cat);
+                }}
+              >
+                <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors shadow-sm" style={{ backgroundColor: isChecked ? color : 'white' }} >
                   {isChecked && (
                     <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -417,7 +418,7 @@ const InfinitePath = () => {
                   )}
                 </div>
                 <span className="text-[15px] font-medium text-black leading-tight select-none">
-                  {cat.replace('publique', 'public')} {/* Correction sémantique légère à l'affichage si besoin */}
+                  {cat.replace('publique', 'public')}
                 </span>
               </label>
             );
@@ -427,10 +428,10 @@ const InfinitePath = () => {
     </div>
 
     <div 
-        ref={containerRef} 
+      ref={containerRef} 
       className={`relative transition-all duration-700 no-scrollbar`} 
-        style={{ height: dynamicHeight }}
-      >
+      style={{ height: dynamicHeight }}
+    >
       <div className="sticky top-0 mask-y-from-75% mask-y-to-90% h-screen overflow-hidden flex justify-center [perspective:1200px]" >
           <div
             className="xl:w-[50vw] relative w-[100vw] flex-none"
@@ -452,7 +453,6 @@ const InfinitePath = () => {
                   alt={`Path ${i}`}
                 />
 
-                {/* ── Marqueur de la ville de départ ── */}
                 {/* ── Marqueur de la ville de départ ── */}
                   {i === 0 && articlePositions['start_city'] && (
                     <div
@@ -511,7 +511,7 @@ const InfinitePath = () => {
                     return (
                       <div
                         key={obj.id}
-                        className={`absolute z-40 cursor-pointer flex flex-col items-center`}
+                        className={`absolute z-40 flex flex-col items-center`}
                         style={{
                           left:            `${safeLeft}%`,
                           top:             `${pos.yPercent}%`,
@@ -527,10 +527,10 @@ const InfinitePath = () => {
                           {activeArticleId === obj.id ? (
                             <motion.div
                               key={`article-${obj.id}`}
-                              initial={{ opacity: 0, scale: 0.8, x: isMobile && `calc(${50 - safeLeft}vw)`, y: isMobile && "-10vh"}}
-                              animate={{ opacity: 1,  scale: 1, x: isMobile && `calc(${50 - safeLeft}vw)`, y: isMobile && "-10vh"}}
-                              exit={{ opacity: 0, scale: 0.8, x: isMobile && `calc(${50 - safeLeft}vw)`,  y: isMobile && "-10vh"}}
-                              transition={{ duration: 0.5, ease: "out" }}
+                              initial={{ opacity: 0, scale: 0.5, x: isMobile ? `calc(${50 - safeLeft}vw)` : 0, y: isMobile ? "-10vh" : 0}}
+                              animate={{ opacity: 1,  scale: 1, x: isMobile ? `calc(${50 - safeLeft}vw)` : 0, y: isMobile ? "-10vh" : 0}}
+                              exit={{ opacity: 0, scale: 0.5, x: isMobile ? `calc(${50 - safeLeft}vw)` : 0,  y: isMobile ? "-10vh" : 0}}
+                              transition={{ duration: 0.5, ease: "in-out" }}
                             >
                               <ArticlePreview articleData={obj.articleData} />
                             </motion.div>
@@ -549,7 +549,7 @@ const InfinitePath = () => {
                         <img 
                           src={obj.svg} 
                           alt="element" 
-                          className="xl:h-[8vh] xl:w-[8vw] h-[7vh] w-[7vw] object-contain drop-shadow-md" 
+                          className="xl:h-[8vh] xl:w-[8vw] h-[7vh] w-[7vw] object-contain drop-shadow-sm" 
                         />
                       </div>
                     );
