@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const backBtn = document.getElementById('goto-favoris-btn');
+  backBtn.addEventListener('click', () => {
+    window.location.href = 'favoris.html';
+  });
+});
+
 async function loadpodium(){
   const {userLikes,classement} = await loadClassement();
   // const classement = await classementResponse.json();
