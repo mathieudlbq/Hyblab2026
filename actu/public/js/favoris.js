@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const backBtn = document.getElementById('back-btn');
+  backBtn.addEventListener('click', () => {
+    window.location.href = 'podium.html';
+  });
+});
 fetch('data/movies.json')
   .then(response => response.json())
   .then(data => {
