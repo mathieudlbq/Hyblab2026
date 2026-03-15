@@ -13,6 +13,11 @@
 
 }
 
+.milestone-font {
+  font-family: 'Shantell Sans', cursive;
+  font-weight: 900
+}
+
 /* Application locale des couleurs à daisyUI via son plugin de thème */
 @plugin "daisyui/theme" {
   name: "light";

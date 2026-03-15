@@ -60,7 +60,8 @@ const ArticlePreview = ({ articleData }) => {
         </button> */}
 
         <span className="text-[1.4vh] font-semibold">
-          📍 À {articleData.fullArticle._distanceFromCentre < 1 ? Math.round(articleData.fullArticle._distanceFromCentre * 1000) + "m" : Math.round(articleData.fullArticle._distanceFromCentre) + "km"}</span>
+          📍 À {articleData.fullArticle._distanceFromCentre < 1 ? Math.round(articleData.fullArticle._distanceFromCentre * 1000) + "m" : parseFloat(articleData.fullArticle._distanceFromCentre).toFixed(1) + "km"}
+        </span>
       </div>
     </div>
   );

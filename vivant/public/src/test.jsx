@@ -55,7 +55,7 @@ const posCyclist = {
 
 const elements = {
   tree: { svg : Object.values(treeFiles), style : 'xl:scale-[95%] scale-[60%] origin-bottom'},
-  milestone:  { svg : Object.values(milestoneFiles), style : 'xl:h-[9vh] h-[4vh] origin-bottom'},
+  milestone:  { svg : Object.values(milestoneFiles), style : 'xl:h-[9vh] h-[5vh] origin-bottom'},
   sign: { svg : Object.values(signFiles), dotPos: [
     { x: 91, y: 15}, //sign1
     { x: 91, y: 15}, //sign2
@@ -219,6 +219,7 @@ const InfinitePath = () => {
 
       return [
         ...milestones.map(mile => ({
+          type: 'milestone', // Différenciation de la borne
           x: parseFloat(mile.getAttribute("cx")),
           y: parseFloat(mile.getAttribute("cy")),
           width: parseFloat(viewBox[2]),
@@ -227,6 +228,7 @@ const InfinitePath = () => {
           svgStyle: elements.milestone.style
         })),
         ...trees.map(tree => ({
+          type: 'tree', // Différenciation de l'arbre
           x: parseFloat(tree.getAttribute("cx")),
           y: parseFloat(tree.getAttribute("cy")),
           width: parseFloat(viewBox[2]),
@@ -394,6 +396,40 @@ const InfinitePath = () => {
  
     return () => unsubscribe();
   }, [activeProgress, pathsData, mapObjectsConfig]);
+
+  const getMilestoneDistance = (pathIndex, yPercent) => {
+    const localProgress = 1 - (yPercent / 100);
+    const milestoneGlobalPos = pathIndex + localProgress;
+
+    let prevArticle = mapObjectsConfig[0];
+    let nextArticle = mapObjectsConfig[mapObjectsConfig.length - 1];
+
+    for (let obj of mapObjectsConfig) {
+      if (obj.globalPos <= milestoneGlobalPos) prevArticle = obj;
+      if (obj.globalPos >= milestoneGlobalPos) {
+        nextArticle = obj;
+        break;
+      }
+    }
+    const dist1 = parseFloat(prevArticle.articleData.fullArticle._distanceFromCentre) || 0;
+    const dist2 = parseFloat(nextArticle.articleData.fullArticle._distanceFromCentre) || 0;
+    const pos1 = prevArticle.globalPos;
+    const pos2 = nextArticle.globalPos;
+
+    const formatDistance = (dist) => {
+      const objDist = (dist < 1) ? {num : Math.round(dist * 1000), unit : "m"} : {num : parseFloat(dist).toFixed(1), unit : "km"}
+      return (<><span className="milestone-font">{objDist.num}</span><span className="milestone-font xl:-mt-[0.8vh] -mt-[0.4vh]">{objDist.unit}</span></>)
+    }
+
+    if (pos1 === pos2) return formatDistance(dist1);
+
+    const ratio = (milestoneGlobalPos - pos1) / (pos2 - pos1);
+    const finalDist = Math.max(0, dist1 + ratio * (dist2 - dist1));
+
+    return formatDistance(finalDist);
+  };
+
+  
  
   return (
     <>
@@ -449,7 +485,7 @@ const InfinitePath = () => {
       <div className="sticky top-0 mask-y-from-75% mask-y-to-90% h-screen overflow-hidden flex justify-center [perspective:1200px]" >
           <div
             className="xl:w-[50vw] relative w-[100vw] flex-none"
-          style={{ transform: "rotateX(50deg)", transformStyle: "preserve-3d" }}
+            style={{ transform: "rotateX(50deg)", transformStyle: "preserve-3d" }}
           >
             <motion.div
               className="flex flex-col-reverse w-full will-change-transform"
@@ -466,15 +502,12 @@ const InfinitePath = () => {
                   className="w-full h-full object-cover -mt-1"
                   alt={`Path ${i}`}
                 />
-
-                {/* ── Marqueur de la ville de départ ── */}
                   {i === 0 && articlePositions['start_city'] && (
                     <div
                       className="absolute z-10 flex flex-col items-center pointer-events-none"
                       style={{
                         left: `${articlePositions['start_city'].xPercent}%`,
                         top: `${articlePositions['start_city'].yPercent}%`,
-                      // On pousse vers le bas (50%) pour que ça apparaisse en-dessous du bout du chemin
                       transform: "translate(-50%, 50%) rotateX(-50deg) translateZ(10px)",
                       transformOrigin: "top center",
                       transformStyle: "preserve-3d"
@@ -494,21 +527,29 @@ const InfinitePath = () => {
                     const yPercent = (c.y / c.height) * 100;
                     return (  
                       <div
-                      key={`${c.type}.-${i}-${index}`}
+                        key={`${c.type}-${i}-${index}`}
                         className="absolute z-20 pointer-events-none flex justify-center"
                         style={{
-                        left: `${xPercent}%`,
-                        top: `${yPercent}%`,
+                          left: `${xPercent}%`,
+                          top: `${yPercent}%`,
                           transform: "translate(-50%, -100%) rotateX(-50deg) translateZ(10px)",
-                        transformOrigin: "bottom center",
-                        transformStyle: "preserve-3d"
+                          transformOrigin: "bottom center",
+                          transformStyle: "preserve-3d"
                         }}
                       >
-                      <img 
-                        src={c.svg} 
-                        alt="element" 
-                        className={`${c.svgStyle} w-auto object-contain drop-shadow-md`}
-                      />
+
+                        {c.type === 'milestone' && (
+                          <div 
+                            className="absolute z-30 flex flex-col items-center font-extrabold text-[0.7vh] xl:text-[1.25vh] xl:bottom-[1.9vh] bottom-[0.85vh]"
+                          >
+                            {getMilestoneDistance(i, yPercent)}
+                          </div>
+                        )}
+                        <img 
+                          src={c.svg} 
+                          alt={c.type} 
+                          className={`${c.svgStyle} w-auto object-contain drop-shadow-md`}
+                        />
                       </div>
                     );
                   })}
@@ -535,8 +576,6 @@ const InfinitePath = () => {
                           willChange:      "transform",
                         }}
                       > 
-                        
-
                         <AnimatePresence mode="wait">
                           {activeArticleId === obj.id ? (
                             <motion.div
@@ -551,7 +590,7 @@ const InfinitePath = () => {
                           ) : (
                             <motion.div
                               key={`dot-${obj.id}`}
-                              initial={{ opacity: 0.3, scale: 1, x: isMobile ? `calc(${50 - safeLeft}vw)` : -50 , y: isMobile ? "-20vh" : -100 }}
+                              initial={{ opacity: 0.3, scale: 1, x: isMobile ? `calc(${50 - safeLeft}vw)` : -50, y: isMobile ? "-20vh" : -100}}
                               animate={{ opacity: 1, scale: 0.25, x: "-50%", y: "-50%" }} 
                               exit={{ opacity: 0.3, scale: 1, x: isMobile ? `calc(${50 - safeLeft}vw)` : -50, y: isMobile ? "-20vh" : -100}}
                               className="xl:w-16 xl:h-16 w-10 h-10 rounded-full z-99 border-7 border-white absolute" 
@@ -566,8 +605,8 @@ const InfinitePath = () => {
                         </AnimatePresence>
                         <img 
                           src={obj.svg} 
-                          alt="element" 
-                          className=" xl:w-[4vw] h-auto w-[7vw] object-contain drop-shadow-sm" 
+                          alt="sign"
+                          className="xl:w-[4vw] h-auto w-[7vw] object-contain drop-shadow-sm" 
                         />
                       </div>
                     );
