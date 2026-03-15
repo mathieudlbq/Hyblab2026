@@ -1,0 +1,1 @@
+const API = "https://hyblab.polytech.univ-nantes.fr/actu/api" 
