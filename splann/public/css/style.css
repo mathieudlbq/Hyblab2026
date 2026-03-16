@@ -277,8 +277,9 @@ h3 {
 /* Swiper slider. Need to fill the container */
 #mySwiper {
     width: 100vw;
-    height: 100vh;
+    height: 96vh;
     position: absolute;
+    top: 5vh;
 }
 /* Navigation buttons */
 
@@ -393,7 +394,7 @@ h3 {
 #bandeau {
     width:100vw;
     position: absolute;
-    bottom: 0vh;
+    bottom: 8vh;
     background-color: white;
     font-size: 20%;
   }
@@ -464,7 +465,7 @@ body{
     font-style: normal;
     font-weight: normal;
     color: black;
-    background-size: contain;
+    background-size: 100vw auto;
     
 }
 #instagram-header{
