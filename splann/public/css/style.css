@@ -5,7 +5,7 @@
 
 .nav-bar-hierarchical {
     position: absolute;
-    bottom: 85px; /* Positionnée au-dessus de la zone de scroll du bas */
+    bottom: 15%; /* Positionnée au-dessus de la zone de scroll du bas */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
