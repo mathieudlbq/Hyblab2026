@@ -411,6 +411,19 @@ html, body {
   width: 91%;
 }
 
+.empty-msg{
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+  margin-left: 3%;
+  color: var(--titleColor);
+  font-family: Inter;
+  font-size: 10%;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
 .list::-webkit-scrollbar { display: none; }
 
 .list-item {
