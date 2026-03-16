@@ -11,12 +11,9 @@ export async function getCoordinates(city) {
         const response = await fetch(url);
         const data = await response.json();
         if (data.features.length === 0) {
-            console.log(data)
             console.error("Ville non trouvée");
             return null;
         }
-
-        console.log(data.features[0].geometry.coordinates)
         return data.features[0].geometry.coordinates;
 
 
@@ -33,12 +30,9 @@ export async function getCityByCoordinates(lat, lng) {
         const response = await fetch(url);
         const data = await response.json();
         if (data.features.length === 0) {
-            console.log(data)
             console.error("Aucune ville trouvée pour ces coordonnées");
             return null;
         }
-
-        console.log(data.features[0].properties.city)
         return data.features[0].properties.city;
 
     } catch (e) {

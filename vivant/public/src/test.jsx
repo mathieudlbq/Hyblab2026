@@ -35,7 +35,7 @@ const ESPACEMENT = 0.20;
 const OFFSET_DEPART = 0.20; // Décale le premier article pour ne pas qu'il soit au tout début
 export const NB_ARTICLES = 10;
 const NB_PATH = Math.ceil(OFFSET_DEPART + (NB_ARTICLES * ESPACEMENT));
-console.log("nombre de chemin pour " + NB_ARTICLES + " articles : " + NB_PATH);
+
 const dicoPaths = {
   path1: { raw: path1Raw, svg: path1Url, points: path1Points, pointsRaw: path1PointsRaw },
   path2: { raw: path2Raw, svg: path2Url, points: path2Points, pointsRaw: path2PointsRaw },
@@ -69,9 +69,6 @@ const pathOptions = Object.values(dicoPaths);
 const pathList = Array.from({ length: NB_PATH }, () => 
   pathOptions[Math.floor(Math.random() * pathOptions.length)]
 );
-
-
-console.log(pathList)
 
 const CategoryList = {
    "Entrepreneuriat":"#DED491",
@@ -240,7 +237,6 @@ const InfinitePath = () => {
         }))
       ];
     });
-    console.log(extractedPoints)
     setPathsData(extractedPaths)
     setPathsPointsData(extractedPoints)
  
@@ -512,7 +508,7 @@ const InfinitePath = () => {
               >
                 <img
                   src={pathObj.svg}
-                  className="w-full h-full object-cover -mt-1"
+                  className="w-full h-full block -mt-1"
                   alt={`Path ${i}`}
                 />
                   {i === 0 && articlePositions['start_city'] && (
@@ -525,12 +521,19 @@ const InfinitePath = () => {
                       transformOrigin: "top center",
                       transformStyle: "preserve-3d"
                     }}
-                  >
-                    <div className="text-sm text-bold whitespace-nowrap flex items-center align-center justify-center gap-2 drop-shadow-lg mt-5" style={{position : "relative", left:"-6vw"}}>
-                      <svg className="w-6 h-6 text-[#FF3B83]" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                      </svg>
-                        {cityName}
+                    >
+                      <div className="flex items-center justify-center gap-2 drop-shadow-lg w-full xl:m-5 m-2.5">
+                        
+                        <div className="xl:p-2.5 p-1.5 rounded-full items-center justify-center bg-[#F6E91E] flex hover:bg-[#E5D813] shrink-0 shadow-sm">
+                          <svg className="xl:w-[1.5vw] xl:h-[1.5vw] w-[4vw] h-[4vw] text-black drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                          </svg>
+                        </div>
+
+                        <div className="xl:text-sm text-[8px] font-extrabold whitespace-nowrap">
+                          {cityName}
+                        </div>
+
                       </div>
                     </div>
                   )}
@@ -553,7 +556,7 @@ const InfinitePath = () => {
 
                         {c.type === 'milestone' && (
                           <div 
-                            className="absolute z-30 flex flex-col items-center font-extrabold text-[0.7vh] xl:text-[1.25vh] xl:bottom-[1.9vh] bottom-[0.85vh]"
+                            className="absolute z-30 flex flex-col items-center font-extrabold text-[0.7vh] xl:text-[1.25vh] xl:bottom-[1.9vh] bottom-[1vh]"
                           >
                             {getMilestoneDistance(i, yPercent)}
                           </div>

@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import ImageCrawl from './test';
-import TestSvg from './ExtractSvg';
 import './App.css';
 
 import { Carte } from './pages/Carte';
@@ -12,7 +11,6 @@ import { Carte } from './pages/Carte';
 const OldTestComponents = () => (
   <div>
     <ImageCrawl />
-    <TestSvg />
   </div>
 );
 

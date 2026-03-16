@@ -1,8 +1,6 @@
 import React from 'react';
 
 const ArticlePreview = ({ articleData }) => {
-  console.log(articleData);
-  // Extraction de la meta description, ou contenu par défaut.
   const metadesc = articleData.fullArticle?._yoast_wpseo_metadesc || "";
 
   return (
@@ -58,10 +56,16 @@ const ArticlePreview = ({ articleData }) => {
              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
           </svg>
         </button> */}
-
-        <span className="text-[1.4vh] font-semibold">
-          📍 À {articleData.fullArticle._distanceFromCentre < 1 ? Math.round(articleData.fullArticle._distanceFromCentre * 1000) + "m" : parseFloat(articleData.fullArticle._distanceFromCentre).toFixed(1) + "km"}
-        </span>
+        <div className='flex items-center xl:gap-2 gap-1'>
+          <div className="xl:w-auto xl:h-auto xl:p-1.5 p-0.5 rounded-full bg-[#F6E91E] flex hover:bg-[#E5D813] shrink-0 shadow-sm">
+            <svg className="xl:w-5 xl:h-5 w-[4vw] h-[4vw] text-black drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+          </div>
+          <span className="text-[1.4vh] font-semibold">
+            À {articleData.fullArticle._distanceFromCentre < 1 ? Math.round(articleData.fullArticle._distanceFromCentre * 1000) + "m" : parseFloat(articleData.fullArticle._distanceFromCentre).toFixed(1) + "km"}
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
     } else {
-        console.log('Connected to the SQLite database.');
         // Enable WAL mode for better concurrency (multiple readers, one writer)
         db.run('PRAGMA journal_mode = WAL');
         // Increase busy timeout to wait if the database is locked

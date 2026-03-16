@@ -54,8 +54,6 @@ db.serialize(() => {
         "Slug" TEXT,
         "Post Modified Date" DATE
     )`);
-    
-    console.log('Table "articles" prête.');
 
     // Start a transaction for the CSV import
     db.run("BEGIN TRANSACTION");
