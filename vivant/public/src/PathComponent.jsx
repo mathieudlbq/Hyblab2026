@@ -93,7 +93,7 @@ const PathComponent = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const SPEED_DESKTOP = Math.max(2000, 5000 - (nbArticles - 10) * 150);
-  const SPEED_MOBILE = Math.max(2000, 5000 - (nbArticles - 10) * 150);
+  const SPEED_MOBILE = Math.max(2000, 4000 - (nbArticles - 10) * 150);
 
   const dynamicHeight = useMemo(() => {
     const speed = isMobile ? SPEED_MOBILE : SPEED_DESKTOP;
