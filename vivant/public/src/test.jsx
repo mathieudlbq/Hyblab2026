@@ -1,6 +1,6 @@
 import { motion, useSpring, useMotionValue, useScroll, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useMemo } from "react";
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { findNearestArticles } from '../../utils/dist';
 import ArticlePreview from './components/ArticlePreview';
 
@@ -26,6 +26,7 @@ import down_left from './assets/mr_patate/down_left.svg';
 import down_right from './assets/mr_patate/down_right.svg';
 import right from './assets/mr_patate/right.svg';
 import left from './assets/mr_patate/left.svg';
+import dormir from './assets/mr_patate/dormir.svg';
 
 const treeFiles = import.meta.glob('./assets/elements/tree/*.svg', { eager: true, import: 'default' });
 const milestoneFiles = import.meta.glob('./assets/elements/milestone/*.svg', { eager: true, import: 'default' });
@@ -288,6 +289,26 @@ const InfinitePath = () => {
         positions['start_city'] = {
           xPercent: (point.x / data0.width) * 100,
           yPercent: (point.y / data0.height) * 100,
+        };
+      }
+
+      // ── Positionnement de la fin du chemin ──
+      const lastIndex = pathsData.length - 1;
+      const dataLast = pathsData[lastIndex];
+      const pathElLast = pathRefs.current[lastIndex];
+      if (dataLast && pathElLast) {
+        const length = pathElLast.getTotalLength();
+        const pStart = pathElLast.getPointAtLength(0);
+        const pEnd = pathElLast.getPointAtLength(length);
+        const isBottomToTop = pStart.y > pEnd.y;
+
+        // On récupère un point très proche de la fin
+        const t = isBottomToTop ? 0.995 : 0.005;
+        const point = pathElLast.getPointAtLength(t * length);
+
+        positions['end_point'] = {
+          xPercent: (point.x / dataLast.width) * 100,
+          yPercent: (point.y / dataLast.height) * 100,
         };
       }
 
@@ -634,6 +655,28 @@ const InfinitePath = () => {
                         </div>
                       );
                     })}
+                  {i === currentPathList.length - 1 && articlePositions['end_point'] && (
+                    <motion.div
+                      className="z-99 absolute flex flex-col items-center justify-center gap-1.5"
+                      style={{
+                        left: `${articlePositions['end_point'].xPercent}%`,
+                        top: `${articlePositions['end_point'].yPercent}%`,
+                        transform: "translate(-50%, -100%) rotateX(-50deg)",
+                        transformStyle: "preserve-3d",
+                        transformOrigin: "bottom center",
+                      }}
+                    >
+                      <img
+                        src={dormir}
+                        alt="dormir"
+                        className="xl:w-[20vw] xl:h-[20vw] w-[100vw] h-auto drop-shadow-sm"
+                      />
+                      <Link to="/home"><button className="btn btn-secondary text-primary rounded-[8px]">
+                        Retour au menu
+                      </button>
+                      </Link>
+                    </motion.div>
+                  )}
                   {pathsData[i] && (
                     <svg
                       viewBox={`0 0 ${pathsData[i].width} ${pathsData[i].height}`}

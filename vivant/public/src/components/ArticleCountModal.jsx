@@ -3,7 +3,7 @@ import rightSvg from './../assets/mr_patate/right.svg';
 
 const ArticleCountModal = ({ modalRef, defaultCount = 10, onConfirm }) => {
   const [count, setCount] = useState(defaultCount);
-  const MIN = 5;
+  const MIN = 1;
   const MAX = 20;
 
   const handleConfirm = () => {
