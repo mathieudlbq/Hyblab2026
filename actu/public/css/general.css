@@ -20,6 +20,19 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Inter_Italic";
+  src: url("../fonts/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-style: normal;
+}
+
 h2, h3, p{
     margin: 0;
 }

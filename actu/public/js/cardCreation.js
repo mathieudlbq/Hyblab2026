@@ -57,7 +57,7 @@ function createFrontCard(titre, affiche, genre, realisateur){
 
 
   info.appendChild(title);
-  info.appendChild(genre_span);
+  // info.appendChild(genre_span);
   info.appendChild(real_span);
 
   front.appendChild(img);

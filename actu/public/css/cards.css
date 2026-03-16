@@ -17,7 +17,6 @@
 }
 
 
-
 .film > div{
 
     
@@ -37,8 +36,10 @@
 }
 
 .film h3{
-    font-family: "Black_italic",sans-serif;
-    font-size: 24px;
+    font-family: "Inter",sans-serif;
+    font-weight: 900;
+
+    font-size: 16px;
 
 }
 
@@ -60,6 +61,7 @@
 .film > .affiche_front > div:last-child{
     display: flex;
     flex-direction: column;
+    
     gap: 1px;
 
     margin: 13px 16px ;
@@ -77,8 +79,9 @@
 
 
 .film > .affiche_front span{
-    font-family: "semi_blod_italic",sans-serif;
-    font-size: 16px;
+    font-family: "Inter",sans-serif;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 
@@ -103,6 +106,9 @@
 
 
 .film > .affiche_back  h3{
+    font-family: Inter;
+      font-weight: 900;
+    font-size: 24px;
     color: black;
 }
 
@@ -125,7 +131,9 @@
     
 }
 .film > .affiche_back > div:first-of-type p{
+    font-family: "Inter",sans-serif;
     font-size: 14px;
+    font-weight: 400;
     color: black;
 }
 .film > .affiche_back > div:first-of-type img{
