@@ -1,0 +1,156 @@
+.affiches{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-evenly;
+
+    transform-style: preserve-3d;
+    margin : 8px;
+
+    /* filter: blur(2px); */
+}
+
+.film{
+    transform-origin: top left;
+    position: relative;
+}
+
+
+.film > div{
+
+    
+    width: 335px;
+    height: 613px;
+    
+    border-radius: 20px;
+    overflow: hidden;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    
+
+    box-shadow: 0 9px 5px 0 rgba(0, 0, 0, 0.25);
+
+}
+
+.film h3{
+    font-family: "Inter",sans-serif;
+    font-weight: 900;
+
+    font-size: 16px;
+
+}
+
+.film h3,.film > .affiche_front span{
+    color: white;
+}
+
+
+
+.film > .affiche_front{
+    /* z-index: 1; */
+    transform: rotateY(0deg);
+    /* background-color: #6ECA97; */
+
+    display: flex;
+    flex-direction: column;
+}
+
+.film > .affiche_front > div:last-child{
+    display: flex;
+    flex-direction: column;
+    
+    gap: 1px;
+
+    margin: 13px 16px ;
+
+    
+}
+
+.film > .affiche_front > img:not(.icon-bottom){
+    /* max-width: 350px; */
+    border-radius: 20px;
+    max-width: 335px;
+    box-shadow: 0 9px 5px 0 rgba(0, 0, 0, 0.25);
+
+}
+
+
+.film > .affiche_front span{
+    font-family: "Inter",sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.film > .affiche_back{
+    transform: rotateY(-180deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.film > .affiche_back > img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 335px;
+    height: 613px;
+    z-index: -1;
+    user-select: none;
+    filter: blur(5px);
+}
+
+
+.film > .affiche_back  h3{
+    font-family: Inter;
+      font-weight: 900;
+    font-size: 24px;
+    color: black;
+}
+
+.film > .affiche_back > div:first-of-type{
+
+    background-color: white;
+    border-radius: 20px;
+    padding: 66px 36px 15px;
+    margin: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    box-shadow: 0 9px 5px 0 rgba(0, 0, 0, 0.25);
+
+
+    height: 65%;
+
+    
+}
+.film > .affiche_back > div:first-of-type p{
+    font-family: "Inter",sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+}
+.film > .affiche_back > div:first-of-type img{
+    user-select: none;
+    width: 26px;
+}
+
+
+.film > .affiche_back > div:last-of-type{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+}
+
+.film > .affiche_back > div:last-of-type img{
+    width: 56px;
+    user-select: none;
+
+}

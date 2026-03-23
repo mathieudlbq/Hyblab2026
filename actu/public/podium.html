@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <title>Podium Semaine</title>
+  <link rel="stylesheet" href="css/podium.css">
+  <link rel="stylesheet" href="css/general.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/loadingio/loading.css@v2.0.0/dist/loading.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="js/authenticate.js" defer></script>
+  <script src="js/cardCreation.js" defer></script>
+  <script src="js/carte_api.js" defer></script>
+  <script src="js/list.js" defer></script>
+  <script src="js/podium.js" defer></script>
+  <script src="js/confetti.js" defer></script>
+
+</head>
+<body>
+  <div class="card-scene">
+    
+    <div class="card" id="flip-card">
+
+      <!-- FRONT -->
+      <div class="card-face card-front">
+        <div class="page">
+          <div class="title">Classement des films</div>
+          <div class="podium" id="podium-container"></div>
+          <div class="list"></div>
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div class="card-face card-back">
+        <div class="page page-back">
+          <div class="title back">Choix de la rédaction</div>
+          <div class="back-hero" id="back-hero">
+            <div id="back-hero-container">
+              <img id="back-hero-img" src="" alt="" class="back-hero-img">
+            </div>
+            
+            <div class="back-hero-hearts">
+              <span class="heart heart-br">&#10084;</span>
+            </div>
+          </div>
+          <img class="back-list-background" src="img/podium/backListBackground.png" alt="background">
+          <div class="back-list-container">
+            <div class="back-list" id="back-list"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <footer>
+      
+      <a href="credits.html">
+        <img src="img/icon_credits.svg" alt="icon_credits">
+      </a>
+
+      <a href="favoris.html"  class="goto-favoris">
+        <span>Favoris</span>
+        <img src="img/podium/heartToFavoris.svg" alt="botton goto favoris" class="heartToFavoris" id="goto-favoris-btn">
+
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>

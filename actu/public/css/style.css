@@ -1,207 +1,148 @@
-/* ------- Important ! Please at least keep the last part of this CSS ----------- */
-/* ------- that adapts content width and height so that aspect ratio  ----------- */
-/* ------- is kept between 9/16 a,d 3/4 (portait orientation)         ----------- */
 
-/* Normalize margin and padding to ease elements positioning */
-*{
-    padding:0;
-    margin:0;
-}
+
+
 
 body{
-    background-color: black;
-    color: white;
-    overflow: hidden;   /* to avoid slider bugs on some browsers */
-    font-family: sans-serif;
+    margin: 0;
+    overflow: hidden;
+    background-color: #F1F1F1;
+
+    touch-action: none;
 }
 
-/* -------------- Loader --------------*/
-#loader{
-    z-index: 2;
-    position:absolute;
-}
 
-#loader-img{
-    top:40%;
-    left:40%;
+/* /////////// */
+
+
+.zone_contre, .zone_pour{
     position: absolute;
+    top: 10px;
+    bottom: 10px;
+
+    border-radius: 50%;
+    
+    width: 100px;
 }
 
-#loader-text{
-    text-align: center;
-    font-size: 25%;
+.zone_contre{
+    --transparance_contre : 50%;
+    background: linear-gradient(90deg, red 49%, transparent var(--transparance_contre));
+
+    left: 0;
+
+    transform: translate(-50%,0);
+}
+
+
+.zone_pour{
+    --transparance_pour : 50%;
+    background: linear-gradient(90deg, transparent var(--transparance_pour), green 51%);
+
+    right: 0;
+    
+    transform: translate(50%,0);
+}
+
+
+.icon_pasinteresse, .icon_interesse{
     position: absolute;
-    top:60%;
-    width: 100%
-}
-/* -------------- End of Loader --------------*/
-
-/* Swiper slider. Need to fill the container */
-#mySwiper{
-    width: 100%;
-    height:100%;
-    position: absolute;
-}
-
-/* white navigation bullets */
-.swiper-pagination-bullet-active {
-    background-color: white !important;
-}
-
-/* the slides and the loader should fill the whole 9:16 zone */
-.swiper-wrapper section, #loader{
-    background-color: dodgerblue;
-    width: 100%;
-    height: 100%;
-}
-
-/* Most of the elements in this demo are absolute positioned with percentages */
-#first-slide header, #second-slide header{
-    text-align: center;
-    width: 100%;
-    top: 10%;
-    position: absolute;
-    font-size: 30%;
-    z-index: 2;
-}
-
-#logo-hyblab{
-    text-align: center;
-    width: 50%;
-    left: 50%; /* center the logo, in interaction with the negative margin-left */
     top: 50%;
-    margin-left:-25%; /* this is half the width */
-    margin-top:calc(-7.5% * 9 / 16 ); /* margins are relative to the element width... :-( */
-    position: absolute;
-    font-size: 50%;
-    z-index: 2;
-    cursor: pointer;
+    transform: translate(-50%,-50%)
 }
 
-/* Last slide image is centered */
-#img-fini{
-    width: 50%;
-    left: 50%; /* center the logo, in interaction with the negative margin-left */
-    top: 40%;
-    position: absolute;
-    margin-left:-25%; /* this is half the width */
-    margin-top:calc(-25% * 9 / 16 ); /* margins are relative to the element width... :-( */
+.icon_pasinteresse{
+    left: 0;
+    transform:translateX(-100px);
 }
 
-main > section{
-    background-image: url('../img/background.svg');
-    background-size: 100% auto; /* background is full width and height is proportional to width */
-    background-position: bottom; /* background is bottom aligned */
+.icon_interesse{
+    right: 0;
+    transform: translateX(100px);
 }
 
-/* Footer of last slide is at the bottom and content is centered */
-#first-slide footer{
-    bottom: 5%;
+
+
+/* //////// */
+
+
+
+.text_intro{
+    background: white;
+    padding: 50px 12px 30px;
+
+    box-shadow: 3px 5px 3.6px 0 rgba(0, 0, 0, 0.25) inset, 0 10px 4px 0 rgba(0, 0, 0, 0.25), 0 9px 5px 0 rgba(0, 0, 0, 0.50);
+    border-radius: 30px;
+
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
     position: absolute;
-    box-sizing: border-box; /* So that padding is not added to width (and width: 100% works) */
-    width: 100%; /* could also use  width: calc(100% - 2em) if not using box-sizing */
-    font-size: 20%;
+    width: 302px;
+
+      top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text_intro > h2, .text_intro > p{
     text-align: center;
-    padding: 1em;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
+.text_intro > h2{
+    font-family: "Black_italic";
+    font-size: 24px;
+}
 
-/* ---------- Positioning of logos on the last slide -------------------- */
-/* here we have a contraint on the height of the logos (not the width)     */
-/* so we cannot use % and use em (which are proportional to the size of the */
-/* slide because of body's font size rule at the end of this CSS           */
-#bandeau {
-    width:100%;
+.text_intro > p{
+    font-family: "semi_blod_italic";
+    font-weight: 300;
+
+    font-size: 14px;
+}
+
+.green_span{
+    color: var(--green);
+}
+
+.red_span{
+    color: var(--red);
+}
+
+span.compteur{
+    /* display: none; */
+
     position: absolute;
+    top: 50%;
+    left: 50%;
+
+    font-family: "Black_italic";
+    font-size: 60px;
+    opacity: 0.9;
+
+    transform: translate(-50%,-50%);
+}
+
+h1.text_fin{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    font-family: "Black_italic";
+    font-size: 30px;
+    transform: translate(0,-50%);
+    text-align: center;
+    padding: 30px;
+
+}
+
+.end_button{
+    position: absolute;
+    left: 50%;
     bottom: 0;
-    background-color: white;
-    font-size: 20%;
-  }
-
-  #bandeau li{
-    list-style-type: none;
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0 0.5em;
-  }
-
-  #bandeau img{
-    height: 2.5em;
-  }
-
-  #bandeau #hyblab{
-    margin: 1em auto;
-    height: 3em;
-    display: block;
-  }
-
-  #bandeau #cc, #bandeau #opensource
-  {
-    height: 1em;
-  }
-
-  #bandeau .stacked{
-    display:block;
-  }
-
-  #bandeau ul{
-    text-align: center;
-    padding: 0 0;
-    margin: 0.5em auto;
-  }
-
-  #bandeau .institutionnel
-  {
-    height: 2em;
-  }
-
-/* ---------- Important media queries for easy responsive content :-) ----------------- */
-/* Whatever the device used, the content will be displayed full width and height if      */
-/* the aspect ratio is between 3/4 and 9/16. If not it is locked to either 3/4 or 9/16  */
-
-/* When the aspect ratio is smaller that 3/4, display a 3/4 content */
-#container{
-    position: fixed; /* To set the size of the container to 100% of the visible viewport height AND for absolute positioning of child elements*/ 
-    height: 100%;   /* even on mobile devices with url or navigation bars */
-    margin-left: calc((100vw - 100 * 3vh / 4) / 2); /* Add black bands on left and right */
-    width: calc(100 * 3vh / 4); /* Force 3/4 aspect ratio */
+    margin: 10px;
+    transform: translate(-50%);
 }
-
-/* We set a default font size here. It will be the base for all other font sizes */
-/* Here the font size is proportional to content width */
-body{
-    font-size: calc(15vh * 3 / 4);
-}
-
-/* Fill the whole viewport when its aspect ratio is between 9/16 and 3/4 */
-@media screen and (max-aspect-ratio: 3/4) {
-    #container{
-        margin-left: 0; /* reset margin-left */
-        width: 100vw; /* content is full width (and full height because of the default rule for container height */
-    }
-
-    /* We set a default font size here. It will be the base for all other font sizes */
-    /* Here the font size is proportional to content width */
-    body{
-        font-size: 15vw;
-    }
-}
-
-/* The content is displayed at 9/16 If the aspect ratio is higher that 9/16  */ 
-@media screen and (max-aspect-ratio: 9/16) {
-    #container{
-        margin-left: 0; /* reset left margin */
-        width: 100vw;   /* content is full width */
-        margin-top: calc(-50 * 16vw / 9); /* move the content half the height to the top */
-        top:50%; /* then center it ! */
-        height: calc(100 * 16vw / 9); /* adjust height so that aspect ratio is 9/16 */
-    }
-
-    /* We set a default font size here. It will be the base for all other font sizes */
-    /* Here the font size is proportional to content width */
-    body{
-        font-size: 15vw;
-    }
-}
-

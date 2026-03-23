@@ -1,0 +1,148 @@
+:root {
+  --color-bg:            #F5F5F5;
+  --color-surface:       #ffffff;
+  --color-shelf:         #DF1517;
+  --color-background:    rgba(223, 21, 23, 0.60);
+  --color-title:         #1a1a1a;
+  --color-card-title:    #ffffff;
+  --color-card-meta:     rgba(255,255,255,0.65);
+
+  --shadow:0 4px 16px    rgba(0,0,0,0.35);
+
+  --font-display:        'Syne', sans-serif;
+  --font-body:           'DM Sans', sans-serif;
+
+  --shelf-height:        44%;
+  --shelf-peg-size:      7.5%;
+  --card-radius:         6px;
+  --row-gap:             15%;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap');
+
+/* ── Root container ── */
+body {
+  background-color: var(--color-bg);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.favoris {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.top-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6%;
+  padding: 6% 5% 4%;
+}
+
+
+.page-title {
+  height: 10%;
+}
+
+/* ── Shelf (scroll container) ── */
+.shelf {
+  position: relative;
+  flex: 1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0 4% 8%;
+  scrollbar-width: none;
+}
+.shelf::-webkit-scrollbar { display: none; }
+
+/* ── One row = poster grid + plank ── */
+.display-row {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--row-gap);
+}
+
+/* ── Three-column poster grid ── */
+.items-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2%;
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 3%;
+  z-index: 2;
+}
+
+/* ── Individual card ── */
+.item-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
+}
+
+.item-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Info ribbon at bottom of each card */
+.item-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12% 8% 8%;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+  z-index: 2;
+}
+
+
+/* ── Shelf plank ── */
+.base-board {
+  position: absolute;
+  width: 100%;
+  height: var(--shelf-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2%;
+  top: 63%;
+  z-index: 2;
+
+  border-radius: 7.677px;
+  background: var(--color-background);
+  box-shadow: var(--shadow);
+
+  /* glass effect */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top: 1px solid var(--color-card-meta);
+  border-left: 1px solid var(--color-card-meta);
+}
+
+/* Peg dots on each end of the plank */
+.peg {
+  width: var(--shelf-peg-size);
+  transform: translateY(15px);
+  fill: rgba(217, 217, 217, 0.40);
+  filter: drop-shadow(0 3.071px 3.071px rgba(0, 0, 0, 0.25));
+}

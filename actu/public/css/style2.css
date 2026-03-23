@@ -1,0 +1,258 @@
+body,.affiches{
+    background-color: #52A0E9;
+}
+
+button{margin-bottom: 0;margin-top: auto;}
+.affiches{
+    display: flex;
+    flex-direction: row;
+
+    /*  */
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    /* perspective: 800px; */
+    margin : 8px;  
+    padding: 10px;
+}
+
+.affiches>.container:first-of-type{
+    margin-left: 100px;
+}
+
+
+.film{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "a ."
+        "a b"
+        ". b";
+}
+
+
+.film > div:first-child{
+    grid-area: a;
+}
+
+.film > div:last-child{
+    grid-area: b;
+}
+
+#line{
+    max-width:100%;
+    position: fixed;
+}
+
+.film{
+    position: relative;
+}
+.affiche_back>div{
+    z-index: 0;
+}
+
+
+
+
+.film{
+
+   
+
+    position: relative;
+}
+
+.icon-bottom {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 40px;
+}
+
+.film > div{
+
+    
+    width: 97px;
+    height: 175px;
+    
+    border-radius: 5.88px;
+    overflow: hidden;
+
+    /* -webkit-backface-visibility: hidden; */
+    /* -moz-backface-visibility: hidden; */
+    /* -ms-backface-visibility: hidden; */
+    
+    transform-style: preserve-3d;
+
+    box-shadow: 0 2.61px 1.45px 0 rgba(0, 0, 0, 0.25);
+
+
+}
+
+.film h3{
+    font-family: "Black_italic",sans-serif;
+    font-size: 7px;
+
+}
+
+.film h3,.film > .affiche_front span{
+    color: white;
+}
+
+
+
+.film > .affiche_front{
+    /* z-index: 1; */
+    transform: rotateY(0deg);
+    /* background-color: #6ECA97; */
+
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px 6px 10% 6px;
+}
+
+.film > .affiche_front > div:last-child{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    margin: 6px 3px ;
+
+    
+}
+
+.film > .affiche_front > img:not(.icon-bottom){
+    /* max-width: 350px; */
+    border-radius: 6px;
+    max-width: 335px;
+    box-shadow: 0 6px 4px 0 rgba(0, 0, 0, 0.40);
+
+}
+
+
+.film > .affiche_front  span{
+    font-family: "semi_blod_italic",sans-serif;
+    font-size: 4px;
+}
+
+
+.film > .affiche_back{
+    transform: rotateY(-180deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* overflow: hidden; */
+}
+
+.film > .affiche_back > img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 335px;
+    height: 613px;
+    z-index: -1;
+    filter: blur(5px);
+}
+
+
+.film > .affiche_back  h3{
+    color: black;
+}
+
+.film > .affiche_back > div:first-of-type{
+
+    background-color: white;
+    border-radius: 5.88px;
+    padding: 20px 10px 5px;
+    margin: 6px 5px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 65%;
+
+    
+}
+.film > .affiche_back > div:first-of-type p{
+    font-size: 4px;
+}
+.film > .affiche_back > div:first-of-type img{
+    width: 7px;
+}
+
+
+.film > .affiche_back > div:last-of-type{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+}
+
+.film > .affiche_back > div:last-of-type img{
+    width: 16.24px;
+    height: 12.76px
+    
+}
+
+/* /// */
+
+.affiches{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+
+    transform-style: preserve-3d;
+    margin : 8px;
+}
+
+body{
+    margin: 0;
+    /* overflow: hidden; */
+    /* background-color: #F1F1F1; */
+
+    touch-action: none;
+}
+
+
+
+
+/* /////////// */
+
+/* 
+.zone_contre{
+    --transparance_contre : 70%;
+    background: linear-gradient(90deg, red 69%, transparent var(--transparance_contre));
+    border-radius: 300px;
+
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 0;
+    
+    width: 200px;
+
+    transform: translate(-70%,0);
+}
+
+
+.zone_pour{
+    --transparance_pour : 30%;
+    background: linear-gradient(90deg, transparent var(--transparance_pour), green 31%);
+    border-radius: 300px;
+
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    right: 0;
+    
+    width: 200px;
+
+    transform: translate(70%,0);
+} */
+/* 
+*{
+    background-color: red;
+} */

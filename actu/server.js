@@ -7,10 +7,14 @@ const path = require('path');
 
 // Create our application
 const app = express();
+app.use(express.json());
+
+
 
 // Load and register our REST API
 const api = require('./api/api');
 app.use('/api', api);
+
 
 // Minimum routing: serve static content from the html directory
 app.use(express.static(path.join(__dirname, 'public')));
